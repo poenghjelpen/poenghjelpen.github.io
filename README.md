@@ -1,14 +1,16 @@
 # Poenghjelpen
 
-Gratis nettside med poenggrenser fra Samordna opptak og en poengkalkulator for VGS-elever.
+Gratis nettside med poenggrenser fra Samordna opptak (2015–2026), utviklingen over tid og en poengkalkulator for VGS-elever.
+
+Nettsiden: <https://poenghjelpen.github.io/>
 
 ## Hva ligger hvor?
 
 | Fil / mappe | Hva det er |
 |---|---|
 | `build.py` | Lager hele nettsiden. **Nettadressen står i variabelen `SITE_URL` øverst.** |
-| `fetch_data.py` | Laster ned nye poenggrenser fra Samordna opptak til `data/poenggrenser.json`. |
-| `data/poenggrenser.json` | Poenggrensene (hovedopptak og suppleringsopptak 2026, 1369 studier). |
+| `fetch_data.py` | Laster ned poenggrenser for alle år fra Samordna opptak til `data/poenggrenser.json`, og kobler sammen studier som har byttet studiekode. |
+| `data/poenggrenser.json` | Poenggrensene for 2015–2026 (hovedopptak og suppleringsopptak, 1369 studier i 2026 med historikk). |
 | `static/` | Utseende (`style.css`), kalkulatorens regler (`poeng.js`) og knappene/søket (`app.js`). |
 | `.github/workflows/pages.yml` | Oppskrift som får GitHub til å bygge og publisere siden automatisk. |
 | `site/` | Den ferdige nettsiden. Lages av `build.py`, og skal **ikke** lastes opp. |
@@ -93,7 +95,7 @@ Hver gang du endrer en fil på GitHub, bygges og publiseres siden automatisk på
 
 ## Oppdatere tallene neste år
 
-Samordna opptak publiserer nye poenggrenser i juli. Da gjør du dette på din egen Mac:
+Samordna opptak publiserer nye poenggrenser i juli. Skriptet henter alle år på nytt, så historikken følger med automatisk. Da gjør du dette på din egen Mac:
 
 1. Åpne programmet **Terminal** og gå til prosjektmappen.
 2. Kjør:
@@ -104,7 +106,7 @@ Samordna opptak publiserer nye poenggrenser i juli. Da gjør du dette på din eg
 
 ### Hvis den automatiske nedlastingen slutter å virke
 1. Gå til <https://www.samordnaopptak.no/universitet-og-hogskole/poengberegning/poenggrenser.html> og åpne statistikken.
-2. I Tableau-visningen: trykk nedlastingsikonet → **Krysstabell / Crosstab** → velg **CSV** → **Last ned**.
+2. I Tableau-visningen: velg **alle år** i filteret for år, trykk nedlastingsikonet → **Krysstabell / Crosstab** → velg **CSV** → **Last ned**.
 3. Legg filen i prosjektmappen, for eksempel med navnet `poenggrenser.csv`.
 4. Kjør:
    ```bash
@@ -122,6 +124,6 @@ Siden havner i mappen `site/`. Lenkene forventer adressen fra `SITE_URL`, så de
 
 ## Kilder
 
-- Poenggrenser: Samordna opptak, statistikken «Poenggrenser» (hentet 17. oktober 2026).
+- Poenggrenser: Samordna opptak, statistikken «Poenggrenser» for 2015–2026 (hentet 17. oktober 2026). Kontrollert mot PDF-eksporten «Poenggrenser_2015-2026.pdf».
 - Poengregler: <https://www.samordnaopptak.no/universitet-og-hogskole/poengberegning/>
 - Nye regler: <https://www.samordnaopptak.no/universitet-og-hogskole/aktuelt/nye-regler-for-opptak-til-hoyere-utdanning.html>

@@ -6,6 +6,7 @@
   --kant: #e2e5ea;
   --aksent: #2453d6;
   --aksent-myk: #e8eefc;
+  --oransje: #c2410c;
   --ok: #157347;
   --ok-myk: #e5f4ec;
   --nei: #b3261e;
@@ -17,13 +18,13 @@
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
     --bg: #0f1115; --flate: #171a21; --tekst: #e8eaef; --dempet: #9aa3b2; --kant: #2a2f3a;
-    --aksent: #7ea2ff; --aksent-myk: #1c2540; --ok: #5fd39a; --ok-myk: #13281e; --nei: #ff8a80; --nei-myk: #2e1716;
+    --aksent: #7ea2ff; --aksent-myk: #1c2540; --oransje: #fb923c; --ok: #5fd39a; --ok-myk: #13281e; --nei: #ff8a80; --nei-myk: #2e1716;
     --skygge: none; color-scheme: dark;
   }
 }
 :root[data-theme="dark"] {
   --bg: #0f1115; --flate: #171a21; --tekst: #e8eaef; --dempet: #9aa3b2; --kant: #2a2f3a;
-  --aksent: #7ea2ff; --aksent-myk: #1c2540; --ok: #5fd39a; --ok-myk: #13281e; --nei: #ff8a80; --nei-myk: #2e1716;
+  --aksent: #7ea2ff; --aksent-myk: #1c2540; --oransje: #fb923c; --ok: #5fd39a; --ok-myk: #13281e; --nei: #ff8a80; --nei-myk: #2e1716;
   --skygge: none; color-scheme: dark;
 }
 
@@ -145,3 +146,27 @@ table.data tbody tr:hover { background: var(--aksent-myk); }
 .regler li { margin: .3rem 0; }
 .filterlinje { display: grid; gap: .6rem; grid-template-columns: 2fr 1fr 1fr; margin: 1rem 0; }
 @media (max-width: 700px) { .filterlinje { grid-template-columns: 1fr; } }
+
+/* Historikk og endringer */
+.opp { color: var(--ok); }
+.ned { color: var(--nei); }
+td.opp, td.ned { font-weight: 600; }
+.to-kol { display: grid; gap: 0 1.5rem; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+.graf { margin: 1rem 0; max-width: 620px; }
+.graf svg { width: 100%; height: auto; display: block; overflow: visible; }
+.graf .rutenett { stroke: var(--kant); stroke-width: 1; }
+.graf .akse { fill: var(--dempet); font-size: 10.5px; font-family: inherit; }
+.graf .linje { fill: none; stroke-width: 2.25; stroke-linejoin: round; stroke-linecap: round; }
+.graf .forste { stroke: var(--aksent); }
+.graf .ordinar { stroke: var(--oransje); }
+.graf .punkt { stroke-width: 2; }
+.graf .punkt.forste { fill: var(--aksent); }
+.graf .punkt.ordinar { fill: var(--oransje); }
+.graf .punkt.null { fill: var(--flate); }
+.graf figcaption { margin-top: .3rem; }
+.forklaring-serier { display: flex; gap: 1.2rem; font-size: .875rem; color: var(--dempet); margin-bottom: .3rem; }
+.serie::before { content: ""; display: inline-block; width: 14px; height: 3px; border-radius: 2px; vertical-align: middle; margin-right: .4rem; }
+.serie.forste::before { background: var(--aksent); }
+.serie.ordinar::before { background: var(--oransje); }
+
+[id] { scroll-margin-top: 72px; }

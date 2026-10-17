@@ -28,6 +28,7 @@ BASE = urlparse(SITE_URL).path or "/"
 if not BASE.endswith("/"):
     BASE += "/"
 I_DAG = date.today().isoformat()
+FORSTE_AR = SISTE_AR = None  # settes i main() ut fra dataene
 
 LAERESTEDER = {
     "AHO": ("AHO", "Arkitektur- og designhøgskolen i Oslo"),
@@ -169,8 +170,9 @@ def last_data():
     studier = []
     for s in d["studier"]:
         s = dict(s)
+        s["hist"] = {int(a): v for a, v in s.get("historikk", {}).items()}
         s["saerskilt"] = s["studienavn"].endswith("*") or any(
-            v is not None and v > 90 for r in ("hoved", "supplering") for v in s[r].values())
+            v is not None and v > 90 for h in s["hist"].values() for r in h.values() for v in r.values())
         s["navn"] = s["studienavn"].rstrip("*").strip()
         kort, langt = LAERESTEDER.get(s["laerested"], (s["laerested"], s["laerested"]))
         s["lkort"], s["llangt"] = kort, langt
@@ -193,6 +195,138 @@ def lared_url(kode):
 
 def fag_url(fag):
     return f"fagomrade/{slug(FAGOMRADER.get(fag, fag))}/"
+
+
+# ---------------------------------------------------------------- historikk
+def verdi(s, ar, kvote, runde="hoved"):
+    """Grensen for et år, eller None hvis studiet ikke hadde tall det året."""
+    return s["hist"].get(ar, {}).get(runde, {}).get(kvote)
+
+
+def endring(s, kvote, fra_ar, til_ar):
+    """Endring i poeng mellom to år. Bare når begge årene har en ekte grense (over 0)."""
+    a, b = verdi(s, fra_ar, kvote), verdi(s, til_ar, kvote)
+    if s["saerskilt"] or not (har_tall(a) and har_tall(b)):
+        return None
+    return round(b - a, 2)
+
+
+def endring_tekst(d):
+    if d is None:
+        return "–"
+    if abs(d) < 0.05:
+        return "±0"
+    return ("+" if d > 0 else "−") + tall(abs(d))
+
+
+def endring_celle(d):
+    klasse = "" if d is None or abs(d) < 0.05 else (" opp" if d > 0 else " ned")
+    return f'<td class="n{klasse}">{endring_tekst(d)}</td>'
+
+
+def historikk_graf(s, forste_ar, siste_ar):
+    """Enkel linjegraf som inline SVG (ingen JavaScript, virker overalt)."""
+    serier = {k: [(a, verdi(s, a, k)) for a in range(forste_ar, siste_ar + 1)] for k in ("forste", "ordinar")}
+    tallverdier = [v for ser in serier.values() for _, v in ser if har_tall(v)]
+    if not tallverdier:
+        return ""
+    B, H, VM, HM, TM, BM = 360, 210, 34, 12, 12, 28
+    lo, hi = min(tallverdier), max(tallverdier)
+    lo, hi = int(lo) - 1, int(hi) + 2
+    if hi - lo < 6:
+        lo -= (6 - (hi - lo)) // 2
+        hi = lo + 6
+    ar_n = max(1, siste_ar - forste_ar)
+
+    def x(a):
+        return VM + (a - forste_ar) * (B - VM - HM) / ar_n if siste_ar > forste_ar else (VM + B - HM) / 2
+
+    def y(v):
+        return TM + (hi - v) * (H - TM - BM) / (hi - lo)
+
+    deler = []
+    steg = max(1, round((hi - lo) / 4))
+    v = lo
+    while v <= hi:
+        deler.append(f'<line class="rutenett" x1="{VM}" x2="{B - HM}" y1="{y(v):.1f}" y2="{y(v):.1f}"/>'
+                     f'<text class="akse" x="{VM - 5}" y="{y(v) + 3.5:.1f}" text-anchor="end">{v}</text>')
+        v += steg
+    hopp = 1 if ar_n <= 6 else 2
+    for a in range(forste_ar, siste_ar + 1):
+        if (siste_ar - a) % hopp == 0:
+            deler.append(f'<text class="akse" x="{x(a):.1f}" y="{H - 8}" text-anchor="middle">{a}</text>')
+    for k, ser in serier.items():
+        biter, bit = [], []
+        for a, v in ser:
+            if har_tall(v):
+                bit.append(f"{x(a):.1f},{y(v):.1f}")
+            elif bit:
+                biter.append(bit)
+                bit = []
+        if bit:
+            biter.append(bit)
+        for b in biter:
+            if len(b) > 1:
+                deler.append(f'<polyline class="linje {k}" points="{" ".join(b)}"/>')
+        navn = "Førstegang" if k == "forste" else "Ordinær"
+        for a, v in ser:
+            if har_tall(v):
+                deler.append(f'<circle class="punkt {k}" cx="{x(a):.1f}" cy="{y(v):.1f}" r="3"><title>{navn} {a}: {tall(v)}</title></circle>')
+            elif v == 0:
+                deler.append(f'<circle class="punkt null {k}" cx="{x(a):.1f}" cy="{H - BM:.1f}" r="3"><title>{navn} {a}: alle kvalifiserte</title></circle>')
+    beskrivelse = f"Linjegraf over poenggrensen for {s['navn']} fra {forste_ar} til {siste_ar} i førstegangskvoten og ordinær kvote"
+    return (f'<figure class="graf"><div class="forklaring-serier"><span class="serie forste">Førstegangskvote</span>'
+            f'<span class="serie ordinar">Ordinær kvote</span></div>'
+            f'<svg viewBox="0 0 {B} {H}" role="img" aria-label="{e(beskrivelse)}">{"".join(deler)}</svg>'
+            f'<figcaption class="small muted">Hovedopptaket. Hule punkter nederst betyr at alle kvalifiserte kom inn det året.</figcaption></figure>')
+
+
+def historikk_tabell(s, forste_ar, siste_ar):
+    rader = []
+    for a in range(siste_ar, forste_ar - 1, -1):
+        f, o = verdi(s, a, "forste"), verdi(s, a, "ordinar")
+        if a not in s["hist"]:
+            rader.append(f'<tr><td>{a}</td><td class="n muted" colspan="2">Ikke tilbudt / ingen tall</td></tr>')
+        else:
+            rader.append(f'<tr><td>{a}</td><td class="n">{grense(f)}</td><td class="n">{grense(o)}</td></tr>')
+    return ('<div class="tabell-wrap"><table class="data"><thead><tr><th>År</th><th class="n">Førstegang</th>'
+            f'<th class="n">Ordinær</th></tr></thead><tbody>{"".join(rader)}</tbody></table></div>')
+
+
+def trend_tekst(s, siste_ar):
+    """Kort tekst om utviklingen, laget fra tallene."""
+    deler = []
+    ar_med_tall = sorted(s["hist"])
+    if len(ar_med_tall) <= 1:
+        return ["Studiet er nytt i oversikten i år, så det finnes ingen tidligere poenggrenser å sammenligne med."]
+    if s.get("tidligere_koder"):
+        koder = ", ".join(s["tidligere_koder"])
+        deler.append(f"Studiet hadde tidligere studiekode {e(koder)}. Tallene fra den gamle koden er tatt med i historikken.")
+    if ar_med_tall[0] > ar_med_tall[-1] - 5 and ar_med_tall[0] > 2015:
+        deler.append(f"Vi har tall for studiet fra {ar_med_tall[0]}.")
+    for kvote, navn in (("ordinar", "ordinær kvote"), ("forste", "førstegangskvoten")):
+        d1 = endring(s, kvote, siste_ar - 1, siste_ar)
+        d5 = endring(s, kvote, siste_ar - 5, siste_ar)
+        biter = []
+        if d1 is not None:
+            biter.append("var omtrent uendret fra i fjor" if abs(d1) < 0.3 else
+                         f"{'steg' if d1 > 0 else 'falt'} med {tall(abs(d1))} poeng fra {siste_ar - 1}")
+        if d5 is not None:
+            biter.append(f"er {'omtrent den samme som' if abs(d5) < 0.3 else (tall(abs(d5)) + ' poeng ' + ('høyere' if d5 > 0 else 'lavere') + ' enn')} for fem år siden ({siste_ar - 5})")
+        if biter:
+            deler.append(f"Grensen i {navn} " + " og ".join(biter) + ".")
+        if kvote == "ordinar":
+            ser = [(a, verdi(s, a, kvote)) for a in ar_med_tall if har_tall(verdi(s, a, kvote))]
+            if len(ser) >= 3 and not s["saerskilt"]:
+                hoy = max(ser, key=lambda t: (t[1], t[0]))
+                lav = min(ser, key=lambda t: (t[1], -t[0]))
+                deler.append(f"I hele perioden var grensen i ordinær kvote høyest i {hoy[0]} ({tall(hoy[1])}) og lavest i {lav[0]} ({tall(lav[1])}).")
+    nuller = [a for a in ar_med_tall if verdi(s, a, "ordinar") == 0]
+    if nuller and len(nuller) < len(ar_med_tall):
+        deler.append(f"I {len(nuller)} av {len(ar_med_tall)} år kom alle kvalifiserte inn i ordinær kvote.")
+    elif nuller:
+        deler.append("Alle kvalifiserte søkere har kommet inn i ordinær kvote hvert år vi har tall for.")
+    return deler
 
 
 # ---------------------------------------------------------------- layout
@@ -229,6 +363,7 @@ def side(path, tittel, beskrivelse, innhold, ekstra_head="", skript=(), i_sitema
 <nav aria-label="Hovedmeny">
 <a href="{url('')}#kalkulator">Kalkulator</a>
 <a href="{url('alle-studier/')}">Alle studier</a>
+<a class="valgfri" href="{url('endringer/')}">Endringer</a>
 <a class="valgfri" href="{url('om/')}">Om</a>
 <button id="tema" type="button" aria-label="Bytt mellom lys og mørk modus" title="Lys/mørk modus">◐</button>
 </nav>
@@ -240,6 +375,7 @@ def side(path, tittel, beskrivelse, innhold, ekstra_head="", skript=(), i_sitema
 <nav aria-label="Bunnmeny">
 <a href="{url('')}">Forside</a>
 <a href="{url('alle-studier/')}">Alle studier</a>
+<a href="{url('endringer/')}">Størst endring</a>
 <a href="{url('om/')}">Om Poenghjelpen</a>
 <a href="{url('personvern/')}">Personvern</a>
 </nav>
@@ -270,11 +406,13 @@ def studietabell(studier, vis_lared=True, vis_fag=False):
         sted = f'<a href="{url(lared_url(s["laerested"]))}">{e(s["lkort"])}</a>, {e(s["studiested"])}' if vis_lared else e(s["studiested"])
         fag = f'<td><a href="{url(fag_url(s["fagomrade"]))}">{e(s["fagnavn"])}</a></td>' if vis_fag else ""
         rader.append(f'<tr><td><a href="{url(s["url"])}">{e(s["navn"])}</a></td><td>{sted}</td>{fag}'
-                     f'<td class="n">{grense(s["f"])}</td><td class="n">{grense(s["o"])}</td></tr>')
+                     f'<td class="n">{grense(s["f"])}</td><td class="n">{grense(s["o"])}</td>'
+                     f'{endring_celle(endring(s, "ordinar", SISTE_AR - 1, SISTE_AR))}</tr>')
     fag_th = "<th>Fagområde</th>" if vis_fag else ""
     sted_th = "Lærested og sted" if vis_lared else "Studiested"
     return (f'<div class="tabell-wrap"><table class="data"><thead><tr><th>Studium</th><th>{sted_th}</th>{fag_th}'
-            f'<th class="n">Førstegang</th><th class="n">Ordinær</th></tr></thead><tbody>{"".join(rader)}</tbody></table></div>')
+            f'<th class="n">Førstegang</th><th class="n">Ordinær</th><th class="n" title="Endring i ordinær kvote fra {SISTE_AR - 1}">Endring</th>'
+            f'</tr></thead><tbody>{"".join(rader)}</tbody></table></div>')
 
 
 def faq_html(sporsmal):
@@ -408,12 +546,18 @@ def studieside(s, st, studier_per_fag, ar):
     navn, sted, lk = s["navn"], s["studiested"], s["lkort"]
     # Unngå «Sykepleie, Oslo, Oslo» når stedet allerede står i studienavnet
     sted_i_navn = sted.lower() in navn.lower()
-    tittel = (f"Poenggrense {navn} ({lk}) {ar}" if sted_i_navn else f"Poenggrense {navn}, {sted} ({lk}) {ar}") + (f" – studiekode {s['studiekode']}" if s["dup"] else "")
+    fra_ar = min(s["hist"]) if s["hist"] else ar
+    periode = f"{fra_ar}–{ar}" if fra_ar < ar else str(ar)
+    tittel = (f"Poenggrense {navn} ({lk}) {periode}" if sted_i_navn else f"Poenggrense {navn}, {sted} ({lk}) {periode}") + (f" – studiekode {s['studiekode']}" if s["dup"] else "")
+    d1 = endring(s, "ordinar", ar - 1, ar)
 
     def kort_desc(g):
         return "alle kvalifiserte kom inn" if g == 0 else ("ikke oppgitt" if g is None or g < 0 else tall(g))
     beskrivelse = (f"Poenggrensen for {navn} ved {s['llangt']} i {sted} var {kort_desc(s['o'])} i ordinær kvote og "
-                   f"{kort_desc(s['f'])} i førstegangskvoten (hovedopptaket {ar})." + (f" Studiekode {s['studiekode']}." if s["dup"] else "") + " Sjekk om du kommer inn.")
+                   f"{kort_desc(s['f'])} i førstegangskvoten (hovedopptaket {ar})."
+                   + (f" {'Opp' if d1 > 0 else 'Ned'} {tall(abs(d1))} fra {ar - 1}." if d1 is not None and abs(d1) >= 0.05 else "")
+                   + (f" Studiekode {s['studiekode']}." if s["dup"] else "")
+                   + (f" Se utviklingen {periode}." if fra_ar < ar else " Sjekk om du kommer inn."))
 
     def boks(etikett, g, under):
         klasse = "verdi" if har_tall(g) else "verdi ord"
@@ -462,7 +606,18 @@ def studieside(s, st, studier_per_fag, ar):
     if 0 in (s["f"], s["o"]):
         sporsmal.insert(1, ("Hva betyr det at alle kvalifiserte kom inn?",
                             "Det betyr at det var nok plasser til alle som oppfylte opptakskravene, så poengsummen var ikke avgjørende."))
+    trend = trend_tekst(s, ar)
+    if fra_ar < ar:
+        sporsmal.insert(1, (f"Har poenggrensen for {navn} gått opp eller ned?", " ".join(trend)))
     faq, faq_ld = faq_html(sporsmal)
+
+    historikk = ""
+    if fra_ar < ar:
+        historikk = (f'<section aria-labelledby="hist-h"><h2 id="hist-h">Utvikling {fra_ar}–{ar}</h2>'
+                     + "".join(f"<p>{t}</p>" for t in trend)
+                     + historikk_graf(s, fra_ar, ar) + historikk_tabell(s, fra_ar, ar) + "</section>")
+    else:
+        historikk = f'<section><h2>Utvikling</h2><p>{trend[0]}</p></section>'
 
     # Lignende studier
     samme = samme_studium(s, st)
@@ -488,6 +643,7 @@ def studieside(s, st, studier_per_fag, ar):
 <p class="muted">{e(s['llangt'])} · {e(sted)} · Studiekode {e(s['studiekode'])} · <a href="{url(fag_url(s['fagomrade']))}">{e(s['fagnavn'])}</a></p>
 <div class="tall-grid">{bokser}</div>
 {sjekk}
+{historikk}
 <section><h2>Hva betyr tallene?</h2>{tekst}
 <p class="small muted">0 i Samordna opptaks tall betyr at alle kvalifiserte søkere fikk tilbud. «Ikke oppgitt» betyr at grensen ikke er publisert.</p></section>
 {faq}
@@ -500,6 +656,56 @@ def studieside(s, st, studier_per_fag, ar):
 def samme_studium(s, st):
     """Samme studienavn ved andre læresteder/steder."""
     return [x for x in st.samme_navn[slug(s["navn"])] if x is not s]
+
+
+def trend_gruppe(liste, ar):
+    """Én setning om hvor mange studier i en gruppe som steg og falt fra i fjor."""
+    d = [x for x in (endring(s, "ordinar", ar - 1, ar) for s in liste) if x is not None]
+    if len(d) < 3:
+        return ""
+    opp, ned = sum(1 for x in d if x >= 0.05), sum(1 for x in d if x <= -0.05)
+    return (f" Av {len(d)} studier med poenggrense både i {ar - 1} og {ar} steg grensen i ordinær kvote på {opp} og falt på {ned}"
+            f" (median endring {endring_tekst(statistics.median(d))} poeng).")
+
+
+def endringer_side(studier, ar):
+    """Hvilke studier har steget og falt mest siste år og siste fem år?"""
+    def liste(kvote, fra):
+        rader = [(s, verdi(s, fra, kvote), verdi(s, ar, kvote), endring(s, kvote, fra, ar)) for s in studier]
+        return [r for r in rader if r[3] is not None]
+
+    def tabell(rader, stigende):
+        rader = sorted(rader, key=lambda r: (r[3] if stigende else -r[3], r[0]["navn"]))[:15]
+        tr = "".join(f'<tr><td><a href="{url(s["url"])}">{e(s["navn"])}</a><br><span class="small muted">{e(s["lkort"])}, {e(s["studiested"])}</span></td>'
+                     f'<td class="n">{tall(a)} → {tall(b)}</td>{endring_celle(d)}</tr>' for s, a, b, d in rader)
+        return (f'<div class="tabell-wrap"><table class="data"><thead><tr><th>Studium</th>'
+                f'<th class="n">Grense</th><th class="n">Endring</th></tr></thead><tbody>{tr}</tbody></table></div>')
+
+    def oppsummer(rader, fra):
+        d = [r[3] for r in rader]
+        opp, ned = sum(1 for x in d if x >= 0.05), sum(1 for x in d if x <= -0.05)
+        return (f'<p>{len(d)} studier hadde en poenggrense både i {fra} og {ar}. Grensen steg på {opp} og falt på {ned}. '
+                f'Median endring var {endring_tekst(statistics.median(d))} poeng.</p>')
+
+    deler = []
+    for kvote, navn in (("ordinar", "ordinær kvote"), ("forste", "førstegangskvoten")):
+        for fra, periode in ((ar - 1, "siste år"), (ar - 5, "siste fem år")):
+            rader = liste(kvote, fra)
+            anker = f"{kvote}-{ar - fra}"
+            deler.append(f'<section id="{anker}"><h2>{navn.capitalize()}: {periode} ({fra}–{ar})</h2>{oppsummer(rader, fra)}'
+                         f'<h3>Steg mest</h3>{tabell(rader, False)}<h3>Falt mest</h3>{tabell(rader, True)}</section>')
+    hopp = " · ".join(f'<a href="#{k}-{n}">{t}</a>' for k, t0 in (("ordinar", "Ordinær"), ("forste", "Førstegang"))
+                      for n, t in ((1, f"{t0} siste år"), (5, f"{t0} siste fem år")))
+    innhold = f"""{sti(("Størst endring", None))}
+<h1>Poenggrenser som har steget og falt mest</h1>
+<p>Her ser du studiene der poenggrensen i hovedopptaket har endret seg mest fra {ar - 1} til {ar}, og fra {ar - 5} til {ar}.
+Vi tar bare med studier som hadde en ekte poenggrense (over 0) begge årene, og ikke studier som rangerer med opptaksprøve.
+En grense som har falt mye, kan bety at det er blitt lettere å komme inn – men den kan også stige igjen neste år.</p>
+<p class="small">Gå til: {hopp}</p>
+{"".join(deler)}"""
+    side("endringer/", f"Poenggrenser som har steget og falt mest {ar - 5}–{ar} | {SITE_NAVN}",
+         f"Se hvilke studier som fikk størst økning og nedgang i poenggrensen fra {ar - 1} til {ar}, og over de siste fem årene ({ar - 5}–{ar}).",
+         innhold)
 
 
 def snitt(verdier):
@@ -522,6 +728,7 @@ def larestedside(kode, liste, ar):
         intro += f" Mediangrensen i ordinær kvote var {tall(med)} poeng."
     if alle_inn:
         intro += f" På {alle_inn} av studiene kom alle kvalifiserte inn i ordinær kvote."
+    intro += trend_gruppe(liste, ar)
     topptekst = ""
     if topp:
         topptekst = "<p>Høyest grense i ordinær kvote: " + ", ".join(
@@ -532,8 +739,8 @@ def larestedside(kode, liste, ar):
 <p>{intro}</p>{topptekst}
 <p class="small">Fagområder: {faglenker}</p>
 {studietabell(liste, vis_lared=False, vis_fag=True)}"""
-    side(lared_url(kode), f"Poenggrenser {langt} ({kort}) {ar} – alle studier",
-         f"Se poenggrensene for alle {len(liste)} studier ved {langt} i {ar}, i førstegangskvoten og ordinær kvote.", innhold)
+    side(lared_url(kode), f"Poenggrenser {langt} ({kort}) {FORSTE_AR}–{ar}",
+         f"Se poenggrensene for alle {len(liste)} studier ved {langt} i {ar}, hva som endret seg fra {ar - 1} og utviklingen siden {FORSTE_AR}.", innhold)
 
 
 def fagside(fag, liste, alle_fag, ar):
@@ -553,6 +760,7 @@ def fagside(fag, liste, alle_fag, ar):
     alle_inn = sum(1 for s in liste if s["o"] == 0)
     if alle_inn:
         intro += f" På {alle_inn} studier kom alle kvalifiserte inn."
+    intro += trend_gruppe(liste, ar)
     larlenker = " · ".join(f'<a href="{url(lared_url(k))}">{e(LAERESTEDER.get(k, (k,))[0])}</a>' for k in larer)
     andre = " · ".join(f'<a href="{url(fag_url(f))}">{e(FAGOMRADER.get(f, f))}</a>' for f in alle_fag if f != fag)
     innhold = f"""{sti(("Fagområder", "#fagomrader"), (navn, None))}
@@ -561,9 +769,17 @@ def fagside(fag, liste, alle_fag, ar):
 <p class="small">Læresteder: {larlenker}</p>
 {studietabell(liste, vis_lared=True)}
 <h2>Andre fagområder</h2><p class="small">{andre}</p>"""
-    side(fag_url(fag), f"Poenggrenser {navn.lower()} {ar} – alle studier og læresteder",
-         f"Sammenlign poenggrensene for {len(liste)} studier innen {navn.lower()} i {ar}. Se hvor det er lettest og vanskeligst å komme inn.",
+    side(fag_url(fag), f"Poenggrenser {navn.lower()} {FORSTE_AR}–{ar} – alle studier og læresteder",
+         f"Sammenlign poenggrensene for {len(liste)} studier innen {navn.lower()} i {ar}, med endring fra {ar - 1} og utvikling siden {FORSTE_AR}. Se hvor det er lettest å komme inn.",
          innhold)
+
+
+def endring_li(studier, ar, opp):
+    rader = [(s, endring(s, "ordinar", ar - 1, ar)) for s in studier]
+    rader = sorted([r for r in rader if r[1] is not None], key=lambda r: -r[1] if opp else r[1])[:6]
+    return "".join(f'<li><a href="{url(s["url"])}">{e(s["navn"])}</a><span class="meta">{e(s["lkort"])}, {e(s["studiested"])}</span>'
+                   f'<span class="grenser">{tall(verdi(s, ar - 1, "ordinar"))} → {tall(s["o"])} '
+                   f'<b class="{"opp" if d > 0 else "ned"}">({endring_tekst(d)})</b></span></li>' for s, d in rader)
 
 
 def forside(studier, per_lared, per_fag, ar):
@@ -594,8 +810,8 @@ def forside(studier, per_lared, per_fag, ar):
     karakterer = "".join(f'<label>{k}<input type="number" name="k{k}" min="0" max="60" inputmode="numeric" placeholder="0"></label>' for k in range(6, 1, -1))
 
     innhold = f"""<section class="helt">
-<h1>Poenggrenser {ar} – kommer du inn?</h1>
-<p>Søk i poenggrensene fra Samordna opptak for {len(studier)} studier, regn ut poengene dine og se hvilke studier du ville kommet inn på.</p>
+<h1>Poenggrenser {FORSTE_AR}–{ar} – kommer du inn?</h1>
+<p>Søk i poenggrensene fra Samordna opptak for {len(studier)} studier, se hvordan de har utviklet seg siden {FORSTE_AR}, regn ut poengene dine og finn ut hvilke studier du ville kommet inn på.</p>
 <label for="sok" class="skjult">Søk etter studium, lærested eller sted</label>
 <input id="sok" type="search" class="stort-sok" placeholder="Søk: sykepleie, NTNU, Bergen, medisin …" autocomplete="off">
 <ul id="sok-treff" class="studieliste" aria-live="polite"></ul>
@@ -678,6 +894,12 @@ def forside(studier, per_lared, per_fag, ar):
 <p class="small muted">Kilde: <a href="https://www.samordnaopptak.no/universitet-og-hogskole/aktuelt/nye-regler-for-opptak-til-hoyere-utdanning.html" rel="noopener">Samordna opptak – Nye regler for opptak til høyere utdanning</a>. Velg «Opptak 2028» i kalkulatoren for å se et forenklet anslag med de nye reglene.</p>
 </section>
 
+<section id="endringer"><h2>Størst endring fra {ar - 1} til {ar}</h2>
+<p>Ordinær kvote, hovedopptaket. Se også <a href="{url('endringer/')}">alle endringer siste år og siste fem år</a>.</p>
+<div class="to-kol"><div><h3>Steg mest</h3><ul class="studieliste">{endring_li(studier, ar, True)}</ul></div>
+<div><h3>Falt mest</h3><ul class="studieliste">{endring_li(studier, ar, False)}</ul></div></div>
+</section>
+
 <section><h2>Høyeste poenggrenser {ar}</h2>
 <ul class="studieliste">{topp_li}</ul>
 <p><a href="{url('alle-studier/')}">Se alle {len(studier)} studier →</a></p></section>
@@ -685,8 +907,8 @@ def forside(studier, per_lared, per_fag, ar):
 <section id="laresteder"><h2>Læresteder</h2><ul class="lenkenett">{lared_li}</ul></section>
 <section id="fagomrader"><h2>Fagområder</h2>{fag_html}</section>
 """
-    side("", f"Poenggrenser {ar} og poengkalkulator – {SITE_NAVN}",
-         f"Se poenggrensene fra Samordna opptak {ar} for {len(studier)} studier, regn ut skolepoeng og konkurransepoeng, og finn ut hvilke studier du kommer inn på.",
+    side("", f"Poenggrenser {FORSTE_AR}–{ar} og poengkalkulator – {SITE_NAVN}",
+         f"Se poenggrensene fra Samordna opptak {FORSTE_AR}–{ar} for {len(studier)} studier, hvordan de har endret seg, regn ut poengene dine og finn ut hvilke studier du kommer inn på.",
          innhold)
 
 
@@ -700,19 +922,21 @@ def alle_studier_side(studier, ar):
         sok = " ".join([s["studiekode"], s["navn"], s["lkort"], s["llangt"], s["studiested"], s["fagnavn"]]).lower()
         rader.append(f'<tr data-l="{e(s["laerested"])}" data-f="{e(s["fagomrade"])}" data-s="{e(sok)}">'
                      f'<td><a href="{url(s["url"])}">{e(s["navn"])}</a></td><td>{e(s["lkort"])}, {e(s["studiested"])}</td>'
-                     f'<td class="n">{grense(s["f"])}</td><td class="n">{grense(s["o"])}</td></tr>')
+                     f'<td class="n">{grense(s["f"])}</td><td class="n">{grense(s["o"])}</td>'
+                     f'{endring_celle(endring(s, "ordinar", ar - 1, ar))}</tr>')
     innhold = f"""{sti(("Alle studier", None))}
 <h1>Alle poenggrenser {ar}</h1>
-<p>Her er alle {len(studier)} studiene fra hovedopptaket {ar}. Filtrer på navn, lærested eller fagområde. Viser <b id="antall">{len(studier)}</b> studier.</p>
+<p>Her er alle {len(studier)} studiene fra hovedopptaket {ar}, med endring i ordinær kvote fra {ar - 1}. Trykk på et studium for å se utviklingen helt tilbake til {FORSTE_AR}.
+Filtrer på navn, lærested eller fagområde. Viser <b id="antall">{len(studier)}</b> studier.</p>
 <div id="filter" class="filterlinje">
 <label class="skjult" for="f-sok">Søk</label><input id="f-sok" type="search" placeholder="Søk etter studium, sted eller studiekode">
 <label class="skjult" for="f-lared">Lærested</label><select id="f-lared"><option value="">Alle læresteder</option>{lared_opts}</select>
 <label class="skjult" for="f-fag">Fagområde</label><select id="f-fag"><option value="">Alle fagområder</option>{fag_opts}</select>
 </div>
-<div class="tabell-wrap"><table class="data" id="alle"><thead><tr><th>Studium</th><th>Lærested og sted</th><th class="n">Førstegang</th><th class="n">Ordinær</th></tr></thead>
+<div class="tabell-wrap"><table class="data" id="alle"><thead><tr><th>Studium</th><th>Lærested og sted</th><th class="n">Førstegang</th><th class="n">Ordinær</th><th class="n">Endring</th></tr></thead>
 <tbody>{"".join(rader)}</tbody></table></div>"""
-    side("alle-studier/", f"Alle poenggrenser {ar} – {len(studier)} studier | {SITE_NAVN}",
-         f"Komplett liste over poenggrensene i Samordna opptak {ar} for {len(studier)} studier, med søk og filter på lærested og fagområde.",
+    side("alle-studier/", f"Alle poenggrenser {FORSTE_AR}–{ar} – {len(studier)} studier | {SITE_NAVN}",
+         f"Komplett liste over poenggrensene i Samordna opptak {ar} for {len(studier)} studier, med endring fra {ar - 1}, historikk tilbake til {FORSTE_AR}, søk og filter.",
          innhold)
 
 
@@ -721,8 +945,12 @@ def om_side(meta, ar):
 <h1>Om Poenghjelpen</h1>
 <p>Poenghjelpen er en gratis og reklamefri side for deg som går på videregående og lurer på hva som skal til for å komme inn på drømmestudiet.</p>
 <h2>Hvor kommer tallene fra?</h2>
-<p>Poenggrensene kommer fra Samordna opptak (Direktoratet for høyere utdanning og kompetanse). Vi lastet ned statistikken «Poenggrenser» for hovedopptaket og suppleringsopptaket {ar} den {e(meta['hentet'])}.
+<p>Poenggrensene kommer fra Samordna opptak (Direktoratet for høyere utdanning og kompetanse). Vi lastet ned statistikken «Poenggrenser» for hovedopptaket og suppleringsopptaket {meta['forste_ar']}–{ar} den {e(meta['hentet'])}.
 Se kilden selv på <a href="https://www.samordnaopptak.no/universitet-og-hogskole/poengberegning/poenggrenser.html" rel="noopener">samordnaopptak.no</a>.</p>
+<h2>Historikken</h2>
+<p>Studiene kobles sammen fra år til år via studiekoden. Samordna opptak bruker dagens navn på studiet og lærestedet for alle år, så et studium som har byttet navn, vises med det nye navnet hele veien.
+Noen studier har fått ny studiekode, ofte etter at læresteder ble slått sammen. Når en gammel kode har samme navn, lærested og studiested som en ny kode, og årene ikke overlapper, kobler vi dem sammen ({sum(len(s.get('tidligere_koder', [])) for s in meta['studier'])} slike koblinger).
+Er vi usikre, lar vi være å koble. Studier som ikke ble tilbudt i {ar} ({len(meta.get('nedlagte', []))} studiekoder), har ikke egne sider.</p>
 <h2>Slik leser du tallene</h2>
 <ul>
 <li><b>Poenggrensen</b> er poengsummen til den siste søkeren som fikk tilbud om plass.</li>
@@ -764,8 +992,10 @@ def side_404():
 
 # ---------------------------------------------------------------- hovedprogram
 def main():
+    global FORSTE_AR, SISTE_AR
     meta, studier = last_data()
     ar = max(s["ar"] for s in studier)
+    FORSTE_AR, SISTE_AR = meta.get("forste_ar", ar), ar
     if OUT.exists():
         shutil.rmtree(OUT)
     (OUT / "assets").mkdir(parents=True)
@@ -787,6 +1017,7 @@ def main():
         larestedside(k, v, ar)
     for f, v in per_fag.items():
         fagside(f, v, alle_fag, ar)
+    endringer_side(studier, ar)
     om_side(meta, ar)
     personvern_side()
     side_404()
