@@ -48,12 +48,18 @@
   function hentIndeks() {
     if (indeks) return Promise.resolve(indeks);
     if (!venter) {
-      venter = fetch(BASE + "assets/studier.json").then(function (r) { return r.json(); }).then(function (d) {
-        indeks = d.map(function (r) {
+      venter = Promise.all([
+        fetch(BASE + "assets/studier.json").then(function (r) { return r.json(); }),
+        fetch(BASE + "assets/private.json").then(function (r) { return r.json(); }).catch(function () { return []; })
+      ]).then(function (res) {
+        indeks = res[0].map(function (r) {
           return { kode: r[0], navn: r[1], lared: r[2], sted: r[3], fag: r[4], f: r[5], o: r[6],
                    url: BASE + r[7], saer: r[8] === 1,
                    sok: norm(r[0] + " " + r[1] + " " + r[2] + " " + r[3] + " " + r[4] + " " + (r[9] || "")) };
-        });
+        }).concat(res[1].map(function (p) {
+          return { navn: p.n, lared: p.s, sted: p.st, url: BASE + p.u, privat: p, f: null, o: null,
+                   sok: norm(p.n + " " + p.s + " " + p.st + " eget opptak privat") };
+        }));
         return indeks;
       });
     }
@@ -61,6 +67,12 @@
   }
 
   function studieLi(s, ekstra) {
+    if (s.privat) {
+      return '<li><a href="' + esc(s.url) + '">' + esc(s.navn) + "</a>" +
+        '<span class="meta">' + esc(s.lared) + ", " + esc(s.sted) + "</span>" +
+        '<span class="grenser"><span class="merke">Eget opptak</span> Minimumskrav: ' + esc(s.privat.mk) + "</span>" +
+        (ekstra || "") + "</li>";
+    }
     return '<li><a href="' + esc(s.url) + '">' + esc(s.navn) + "</a>" +
       '<span class="meta">' + esc(s.lared) + ", " + esc(s.sted) + "</span>" +
       '<span class="grenser">Førstegang: ' + grenseTekst(s.f) + " · Ordinær: " + grenseTekst(s.o) + "</span>" +
@@ -77,8 +89,11 @@
       hentIndeks().then(function (d) {
         var ord = q.split(/\s+/);
         var treff = d.filter(function (s) { return ord.every(function (o) { return s.sok.indexOf(o) !== -1; }); });
+        // Vis alltid treff fra private høyskoler, selv om det er mange treff i Samordna opptak
+        var samordna = treff.filter(function (s) { return !s.privat; }), privat = treff.filter(function (s) { return s.privat; });
+        var vis = samordna.slice(0, 25 - Math.min(privat.length, 8)).concat(privat.slice(0, 8));
         sokListe.innerHTML = treff.length
-          ? treff.slice(0, 25).map(function (s) { return studieLi(s); }).join("") +
+          ? vis.map(function (s) { return studieLi(s); }).join("") +
             (treff.length > 25 ? '<li class="mer">' + treff.length + ' treff – <a href="' + BASE + "alle-studier/?q=" +
               encodeURIComponent(sok.value) + '">se alle</a></li>' : "")
           : '<li class="mer">Ingen treff. Prøv et annet ord, for eksempel «sykepleie» eller «Bergen».</li>';
@@ -144,6 +159,39 @@
     if (lagra) kjorSjekk();
   }
 
+  /* ---------- «Oppfyller du kravet?» på sidene for private høyskoler ---------- */
+  var psjekk = $("#sjekk-privat");
+  if (psjekk) {
+    var st = { m: JSON.parse(psjekk.getAttribute("data-min") || "{}"), fag: psjekk.getAttribute("data-fag") === "1",
+               ingen: psjekk.getAttribute("data-ingen") === "1" };
+    var pS = $("#p-skole"), pK = $("#p-konk"), pF = $("#p-fgv"), pM = $("#p-matte"), pUt = $("#p-ut");
+    var lagret = hent();
+    if (lagret) {
+      pS.value = String(lagret.skolepoeng).replace(".", ",");
+      pK.value = String(lagret.konkurransepoeng).replace(".", ",");
+      if (lagret.fgv !== undefined) pF.checked = !!lagret.fgv;
+      if (pM && lagret.matte !== undefined) pM.checked = !!lagret.matte;
+    }
+    var kjorP = function (ev) {
+      if (ev) ev.preventDefault();
+      var s = lesTall(pS.value), k = lesTall(pK.value);
+      if (isNaN(k)) k = s;
+      if (isNaN(s)) s = k;
+      if (isNaN(s) && (st.m.alle !== undefined || st.m.forste !== undefined)) { pUt.innerHTML = '<p class="muted">Skriv inn poengene dine.</p>'; return; }
+      var t = Poeng.privatStatus(st, { skolepoeng: s, konkurransepoeng: k, fgv: pF.checked, matte: pM ? pM.checked : false });
+      var linjer = [];
+      if (t.poeng === "ja") linjer.push('<li class="ok"><b>Poeng:</b> Du oppfyller minimumskravet.</li>');
+      else if (t.poeng === "nei") linjer.push('<li class="nei"><b>Poeng:</b> Du mangler ' + tall(t.mangler) + " poeng på minimumskravet.</li>");
+      else if (t.poeng === "ingen") linjer.push('<li class="ok"><b>Poeng:</b> Studiet har ikke noe poengkrav.</li>');
+      else linjer.push("<li><b>Poeng:</b> Skolen oppgir ikke noe poengkrav for dette studiet, så vi kan ikke si noe sikkert.</li>");
+      if (t.fag === "ja") linjer.push('<li class="ok"><b>Fagkrav:</b> Du har matematikken som kreves.</li>');
+      else if (t.fag === "nei") linjer.push('<li class="nei"><b>Fagkrav:</b> Du må ha matematikk R1, eller S1 + S2.</li>');
+      pUt.innerHTML = "<ul>" + linjer.join("") + '</ul><p class="muted small">Husk: et minimumskrav gir ikke garantert plass. Du må også ha generell studiekompetanse.</p>';
+    };
+    psjekk.addEventListener("submit", kjorP);
+    if (lagret) kjorP();
+  }
+
   /* ---------- Poengkalkulatoren ---------- */
   var kalk = $("#kalk");
   if (kalk) {
@@ -179,7 +227,7 @@
         var fagValg = $("#treff-fag"), q = norm($("#treff-sok").value).trim();
         var inn = [], nesten = [];
         d.forEach(function (s) {
-          if (s.saer) return;
+          if (s.saer || s.privat) return;
           if (fagValg.value && s.fag !== fagValg.value) return;
           if (q && s.sok.indexOf(q) === -1) return;
           var viaF = p.forstegang && s.f !== null && s.f >= 0 && p.skolepoeng >= s.f;
@@ -215,7 +263,7 @@
       }
       var p = Poeng.beregn(inp);
       siste = p;
-      lagre({ skolepoeng: p.skolepoeng, konkurransepoeng: p.konkurransepoeng });
+      lagre({ skolepoeng: p.skolepoeng, konkurransepoeng: p.konkurransepoeng, fgv: inp.fgv, matte: Poeng.harMatteKrav(inp.realfag) });
       res.hidden = false;
       $("#poengtabell").innerHTML =
         linje("Karakterpoeng (snitt × 10)", p.karakterpoeng) +
@@ -236,6 +284,39 @@
         ? "Beregnet med de nye reglene fra 2028 (forenklet). Grensene under er fra 2026, da de gamle reglene gjaldt, så sammenligningen er bare en pekepinn."
         : "Beregnet med reglene for opptaket i " + inp.aar + ".";
       visTreff();
+      visPrivat(p, inp);
+    };
+
+    var visPrivat = function (p, inp) {
+      hentIndeks().then(function (d) {
+        var pp = { skolepoeng: p.skolepoeng, konkurransepoeng: p.konkurransepoeng, fgv: inp.fgv, matte: Poeng.harMatteKrav(inp.realfag) };
+        var skoler = {}, rekkefolge = [];
+        d.forEach(function (s) {
+          if (!s.privat) return;
+          if (!skoler[s.lared]) { skoler[s.lared] = []; rekkefolge.push(s.lared); }
+          skoler[s.lared].push({ s: s, st: Poeng.privatStatus(s.privat, pp) });
+        });
+        $("#privat-liste").innerHTML = rekkefolge.map(function (navn) {
+          var liste = skoler[navn];
+          var ja = liste.filter(function (x) { return x.st.samlet === "ja"; }).length;
+          var ukjent = liste.filter(function (x) { return x.st.samlet === "ukjent"; }).length;
+          var ingenPoeng = liste.every(function (x) { return x.st.poeng === "ingen"; });
+          var oppsummering = ingenPoeng
+            ? navn + ": ingen poengkrav – du oppfyller fagkravene på " + ja + " av " + liste.length + " studier"
+            : navn + ": du oppfyller minimumskravet på " + ja + " av " + liste.length + " studier" + (ukjent ? " (" + ukjent + " uten oppgitt krav)" : "");
+          var li = liste.map(function (x) {
+            var t = x.st, merk;
+            if (t.samlet === "ja") merk = '<span class="via">' + (t.poeng === "ingen" ? "Ingen poengkrav" : "Oppfyller minimumskravet") + "</span>";
+            else if (t.samlet === "ukjent") merk = '<span class="via ukjent">Poengkrav ikke oppgitt</span>';
+            else if (t.fag === "nei") merk = '<span class="via nei">Mangler R1 eller S1 + S2</span>';
+            else merk = '<span class="via nei">Mangler ' + tall(t.mangler) + " poeng</span>";
+            var andre = x.s.privat.a && x.s.privat.a.length ? '<span class="meta">Krever også: ' + esc(x.s.privat.a.join(", ").toLowerCase()) + "</span>" : "";
+            return studieLi(x.s, merk + andre);
+          }).join("");
+          return "<details><summary>" + esc(oppsummering) + '</summary><ul class="studieliste">' + li + "</ul></details>";
+        }).join("");
+        $("#privat-boks").hidden = rekkefolge.length === 0;
+      });
     };
 
     kalk.addEventListener("input", kjorKalk);

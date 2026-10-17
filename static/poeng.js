@@ -90,7 +90,36 @@
     return poeng >= grense ? "ja" : "nei";
   }
 
-  var api = { beregn: beregn, kommerInn: kommerInn, snittFraKarakterer: snittFraKarakterer, REALFAG: REALFAG };
+  // Har du matematikk R1 (eller R2), eller både S1 og S2?
+  function harMatteKrav(realfag) {
+    var r = realfag || [];
+    return r.indexOf("R1") !== -1 || r.indexOf("R2") !== -1 || (r.indexOf("S1") !== -1 && r.indexOf("S2") !== -1);
+  }
+
+  /* Private høyskoler med eget opptak: oppfyller du minimumskravet?
+     st = {m: {alle} | {forste, ordinar} | {}, ingen: 0/1, fag: 0/1}
+     p  = {skolepoeng, konkurransepoeng, fgv (har førstegangsvitnemål), matte (R1 eller S1+S2)} */
+  function privatStatus(st, p) {
+    var m = st.m || {}, poeng, mangler = null;
+    if (m.alle !== undefined) {
+      // Med førstegangsvitnemål gjelder skolepoeng, ellers konkurransepoeng
+      var verdi = p.fgv ? p.skolepoeng : p.konkurransepoeng;
+      poeng = verdi >= m.alle ? "ja" : "nei";
+      if (poeng === "nei") mangler = r2(m.alle - verdi);
+    } else if (m.forste !== undefined) {
+      var viaF = p.fgv && p.skolepoeng >= m.forste, viaO = p.konkurransepoeng >= m.ordinar;
+      poeng = viaF || viaO ? "ja" : "nei";
+      if (poeng === "nei") mangler = r2(Math.min(p.fgv ? m.forste - p.skolepoeng : Infinity, m.ordinar - p.konkurransepoeng));
+    } else {
+      poeng = st.ingen ? "ingen" : "ukjent";
+    }
+    var fag = st.fag ? (p.matte ? "ja" : "nei") : "ingen";
+    var samlet = (poeng === "nei" || fag === "nei") ? "nei" : (poeng === "ukjent" ? "ukjent" : "ja");
+    return { poeng: poeng, fag: fag, samlet: samlet, mangler: mangler };
+  }
+
+  var api = { beregn: beregn, kommerInn: kommerInn, snittFraKarakterer: snittFraKarakterer, REALFAG: REALFAG,
+              harMatteKrav: harMatteKrav, privatStatus: privatStatus };
   if (typeof module !== "undefined" && module.exports) module.exports = api;
   else root.Poeng = api;
 })(this);

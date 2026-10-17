@@ -1,0 +1,1734 @@
+{
+ "hentet": "2026-10-17",
+ "forklaring": "Private høyskoler med eget opptak. Tallene er minimumskrav fra skolenes egne nettsider, ikke poenggrenser.",
+ "skoler": [
+  {
+   "id": "bi",
+   "navn": "Handelshøyskolen BI",
+   "kort": "BI",
+   "nettside": "https://www.bi.no/",
+   "gjelder": "Studiestart høsten 2026 (studieåret 2026/2027)",
+   "tittel_ar": "2026/2027",
+   "gjelder_merknad": "BI har ikke publisert opptakskrav for studiestart høsten 2027 ennå. Vi viser de siste publiserte kravene (sist oppdatert av BI 3. november 2025).",
+   "opptak": "Løpende opptak. Prioritert søknadsfrist for bachelorstudier er 15. april. Etter fristen kan enkelte studier eller campuser stenge når de er fulle.",
+   "poengregel": "Søker du med førstegangsvitnemål, gjelder skolepoeng. Søker du med ordinært vitnemål, gjelder konkurransepoeng.",
+   "garanti": "BI skriver at du ikke er garantert plass selv om du oppfyller minimumskravet, fordi det avhenger av kapasitet og antall søkere. Noen studier har i tillegg prioriterte grenser: søkere over grensen blir prioritert.",
+   "kilder": [
+    {
+     "tittel": "BI – Opptakskrav: Bachelorstudier og årsenheter",
+     "url": "https://www.bi.no/studier-og-kurs/soknad-og-opptak/opptakskrav/bachelorstudier/",
+     "oppdatert": "3. november 2025"
+    },
+    {
+     "tittel": "BI – Admission requirements, international bachelor programmes",
+     "url": "https://www.bi.no/en/programmes-and-individual-courses/admissions/admission-requirements/bachelor-programmes/",
+     "oppdatert": "10. april 2025"
+    },
+    {
+     "tittel": "BI – Søknad og opptak (frister)",
+     "url": "https://www.bi.no/studier-og-kurs/soknad-og-opptak/",
+     "oppdatert": null
+    }
+   ],
+   "utelatt": "Deltidsstudier, nettstudier som enkeltemner og masterstudier er ikke med.",
+   "studier": [
+    {
+     "id": "bachelor-i-rettsvitenskap",
+     "navn": "Rettsvitenskap",
+     "type": "Bachelor",
+     "studiepoeng": 180,
+     "sprak": "Norsk",
+     "steder": [
+      "Oslo"
+     ],
+     "minimum": {
+      "forste": 49,
+      "ordinar": 54,
+      "tekst": "Oslo 49 poeng (ordinær kvote 54)"
+     },
+     "minimum_merknad": null,
+     "prioritert": [],
+     "fagkrav": null,
+     "andre_krav": [],
+     "pris": "86 800 kr per år",
+     "oppstart": "Høst 2026",
+     "frist": "15. april (prioritert frist, deretter løpende opptak)",
+     "url": "https://www.bi.no/studier-og-kurs/bachelorstudier/bachelor-i-rettsvitenskap/",
+     "kilde_krav": "https://www.bi.no/studier-og-kurs/soknad-og-opptak/opptakskrav/bachelorstudier/"
+    },
+    {
+     "id": "sivilokonom",
+     "navn": "Siviløkonom (Bachelor i økonomi og ledelse)",
+     "type": "Bachelor",
+     "studiepoeng": 300,
+     "sprak": "Norsk",
+     "steder": [
+      "Oslo"
+     ],
+     "minimum": {
+      "forste": 44,
+      "ordinar": 47,
+      "tekst": "Oslo 44 poeng (ordinær kvote 47)"
+     },
+     "minimum_merknad": null,
+     "prioritert": [],
+     "fagkrav": "Matematikk R1, eller S1 + S2",
+     "andre_krav": [],
+     "pris": "86 800 kr per år",
+     "oppstart": "Høst 2026",
+     "frist": "15. april (prioritert frist, deretter løpende opptak)",
+     "url": "https://www.bi.no/studier-og-kurs/bachelorstudier/sivilokonom/",
+     "kilde_krav": "https://www.bi.no/studier-og-kurs/soknad-og-opptak/opptakskrav/bachelorstudier/"
+    },
+    {
+     "id": "digital-kommunikasjon-og-markedsforing",
+     "navn": "Digital kommunikasjon og markedsføring",
+     "type": "Bachelor",
+     "studiepoeng": 180,
+     "sprak": "Norsk",
+     "steder": [
+      "Bergen",
+      "Oslo",
+      "Trondheim"
+     ],
+     "minimum": {
+      "alle": 35,
+      "tekst": "Øvrige bachelorstudier: 35 poeng"
+     },
+     "minimum_merknad": null,
+     "prioritert": [],
+     "fagkrav": null,
+     "andre_krav": [],
+     "pris": "86 800 kr per år",
+     "oppstart": "Høst 2026",
+     "frist": "15. april (prioritert frist, deretter løpende opptak)",
+     "url": "https://www.bi.no/studier-og-kurs/bachelorstudier/digital-kommunikasjon-og-markedsforing/",
+     "kilde_krav": "https://www.bi.no/studier-og-kurs/soknad-og-opptak/opptakskrav/bachelorstudier/"
+    },
+    {
+     "id": "eiendomsmegling-jus-okonomi",
+     "navn": "Eiendomsmegling, jus og økonomi",
+     "type": "Bachelor",
+     "studiepoeng": 180,
+     "sprak": "Norsk",
+     "steder": [
+      "Bergen",
+      "Oslo",
+      "Stavanger",
+      "Trondheim"
+     ],
+     "minimum": {
+      "alle": 35,
+      "tekst": "Øvrige bachelorstudier: 35 poeng"
+     },
+     "minimum_merknad": null,
+     "prioritert": [
+      {
+       "sted": "Bergen",
+       "poeng": 40
+      },
+      {
+       "sted": "Trondheim",
+       "poeng": 38
+      }
+     ],
+     "fagkrav": null,
+     "andre_krav": [],
+     "pris": "86 800 kr per år",
+     "oppstart": "Høst 2026",
+     "frist": "15. april (prioritert frist, deretter løpende opptak)",
+     "url": "https://www.bi.no/studier-og-kurs/bachelorstudier/eiendomsmegling-jus-okonomi/",
+     "kilde_krav": "https://www.bi.no/studier-og-kurs/soknad-og-opptak/opptakskrav/bachelorstudier/"
+    },
+    {
+     "id": "finans",
+     "navn": "Finans",
+     "type": "Bachelor",
+     "studiepoeng": 180,
+     "sprak": "Norsk",
+     "steder": [
+      "Bergen",
+      "Oslo"
+     ],
+     "minimum": {
+      "alle": 35,
+      "tekst": "Øvrige bachelorstudier: 35 poeng"
+     },
+     "minimum_merknad": null,
+     "prioritert": [
+      {
+       "sted": "Bergen",
+       "poeng": 40
+      },
+      {
+       "sted": "Oslo",
+       "poeng": 38
+      }
+     ],
+     "fagkrav": null,
+     "andre_krav": [],
+     "pris": "86 800 kr per år",
+     "oppstart": "Høst 2026",
+     "frist": "15. april (prioritert frist, deretter løpende opptak)",
+     "url": "https://www.bi.no/studier-og-kurs/bachelorstudier/finans/",
+     "kilde_krav": "https://www.bi.no/studier-og-kurs/soknad-og-opptak/opptakskrav/bachelorstudier/"
+    },
+    {
+     "id": "forretningsjus-og-okonomi",
+     "navn": "Forretningsjus og økonomi",
+     "type": "Bachelor",
+     "studiepoeng": 180,
+     "sprak": "Norsk",
+     "steder": [
+      "Bergen",
+      "Oslo",
+      "Trondheim"
+     ],
+     "minimum": {
+      "alle": 35,
+      "tekst": "Øvrige bachelorstudier: 35 poeng"
+     },
+     "minimum_merknad": null,
+     "prioritert": [],
+     "fagkrav": null,
+     "andre_krav": [],
+     "pris": "86 800 kr per år",
+     "oppstart": "Høst 2026",
+     "frist": "15. april (prioritert frist, deretter løpende opptak)",
+     "url": "https://www.bi.no/studier-og-kurs/bachelorstudier/forretningsjus-og-okonomi/",
+     "kilde_krav": "https://www.bi.no/studier-og-kurs/soknad-og-opptak/opptakskrav/bachelorstudier/"
+    },
+    {
+     "id": "forretningsutvikling-og-entreprenorskap",
+     "navn": "Forretningsutvikling og entreprenørskap",
+     "type": "Bachelor",
+     "studiepoeng": 180,
+     "sprak": "Norsk",
+     "steder": [
+      "Bergen",
+      "Oslo",
+      "Trondheim"
+     ],
+     "minimum": {
+      "alle": 35,
+      "tekst": "Øvrige bachelorstudier: 35 poeng"
+     },
+     "minimum_merknad": null,
+     "prioritert": [],
+     "fagkrav": null,
+     "andre_krav": [],
+     "pris": "86 800 kr per år",
+     "oppstart": "Høst 2026",
+     "frist": "15. april (prioritert frist, deretter løpende opptak)",
+     "url": "https://www.bi.no/studier-og-kurs/bachelorstudier/forretningsutvikling-og-entreprenorskap/",
+     "kilde_krav": "https://www.bi.no/studier-og-kurs/soknad-og-opptak/opptakskrav/bachelorstudier/"
+    },
+    {
+     "id": "international-management",
+     "navn": "International Management",
+     "type": "Bachelor",
+     "studiepoeng": 180,
+     "sprak": "Norsk",
+     "steder": [
+      "Bergen",
+      "Oslo",
+      "Trondheim"
+     ],
+     "minimum": {
+      "alle": 35,
+      "tekst": "Øvrige bachelorstudier: 35 poeng"
+     },
+     "minimum_merknad": null,
+     "prioritert": [],
+     "fagkrav": null,
+     "andre_krav": [],
+     "pris": "86 800 kr per år",
+     "oppstart": "Høst 2026",
+     "frist": "15. april (prioritert frist, deretter løpende opptak)",
+     "url": "https://www.bi.no/studier-og-kurs/bachelorstudier/international-management/",
+     "kilde_krav": "https://www.bi.no/studier-og-kurs/soknad-og-opptak/opptakskrav/bachelorstudier/"
+    },
+    {
+     "id": "markedsforingsledelse",
+     "navn": "Markedsføringsledelse",
+     "type": "Bachelor",
+     "studiepoeng": 180,
+     "sprak": "Norsk",
+     "steder": [
+      "Bergen",
+      "Oslo",
+      "Stavanger",
+      "Trondheim"
+     ],
+     "minimum": {
+      "alle": 35,
+      "tekst": "Øvrige bachelorstudier: 35 poeng"
+     },
+     "minimum_merknad": null,
+     "prioritert": [],
+     "fagkrav": null,
+     "andre_krav": [],
+     "pris": "86 800 kr per år",
+     "oppstart": "Høst 2026",
+     "frist": "15. april (prioritert frist, deretter løpende opptak)",
+     "url": "https://www.bi.no/studier-og-kurs/bachelorstudier/markedsforingsledelse/",
+     "kilde_krav": "https://www.bi.no/studier-og-kurs/soknad-og-opptak/opptakskrav/bachelorstudier/"
+    },
+    {
+     "id": "okonomi-og-administrasjon",
+     "navn": "Økonomi og administrasjon",
+     "type": "Bachelor",
+     "studiepoeng": 180,
+     "sprak": "Norsk",
+     "steder": [
+      "Bergen",
+      "Nettstudier",
+      "Oslo",
+      "Stavanger",
+      "Trondheim"
+     ],
+     "minimum": {
+      "alle": 35,
+      "tekst": "Øvrige bachelorstudier: 35 poeng"
+     },
+     "minimum_merknad": null,
+     "prioritert": [
+      {
+       "sted": "Bergen",
+       "poeng": 40
+      },
+      {
+       "sted": "Trondheim",
+       "poeng": 38
+      }
+     ],
+     "fagkrav": null,
+     "andre_krav": [],
+     "pris": "86 800 kr per år",
+     "oppstart": "Høst 2026",
+     "frist": "15. april (prioritert frist, deretter løpende opptak)",
+     "url": "https://www.bi.no/studier-og-kurs/bachelorstudier/okonomi-og-administrasjon/",
+     "kilde_krav": "https://www.bi.no/studier-og-kurs/soknad-og-opptak/opptakskrav/bachelorstudier/"
+    },
+    {
+     "id": "organisasjonspsykologi-hr-og-ledelse",
+     "navn": "Organisasjonspsykologi, HR og ledelse",
+     "type": "Bachelor",
+     "studiepoeng": 180,
+     "sprak": "Norsk",
+     "steder": [
+      "Bergen",
+      "Oslo",
+      "Stavanger",
+      "Trondheim"
+     ],
+     "minimum": {
+      "alle": 35,
+      "tekst": "Øvrige bachelorstudier: 35 poeng"
+     },
+     "minimum_merknad": null,
+     "prioritert": [
+      {
+       "sted": "Trondheim",
+       "poeng": 38
+      }
+     ],
+     "fagkrav": null,
+     "andre_krav": [],
+     "pris": "86 800 kr per år",
+     "oppstart": "Høst 2026",
+     "frist": "15. april (prioritert frist, deretter løpende opptak)",
+     "url": "https://www.bi.no/studier-og-kurs/bachelorstudier/organisasjonspsykologi-hr-og-ledelse/",
+     "kilde_krav": "https://www.bi.no/studier-og-kurs/soknad-og-opptak/opptakskrav/bachelorstudier/"
+    },
+    {
+     "id": "arsenhet-i-bedriftsokonomi",
+     "navn": "Bedriftsøkonomi (årsenhet)",
+     "type": "Årsenhet",
+     "studiepoeng": 60,
+     "sprak": "Norsk",
+     "steder": [
+      "Nettstudier",
+      "Stavanger"
+     ],
+     "minimum": {
+      "alle": 28,
+      "tekst": "Årsenheter: 28 poeng"
+     },
+     "minimum_merknad": null,
+     "prioritert": [],
+     "fagkrav": null,
+     "andre_krav": [],
+     "pris": "86 800 kr per år (heltid), 43 400 kr per år (deltid)",
+     "oppstart": "Høst 2026",
+     "frist": "15. april (prioritert frist, deretter løpende opptak)",
+     "url": "https://www.bi.no/studier-og-kurs/bachelorstudier/arsenhet-i-bedriftsokonomi/",
+     "kilde_krav": "https://www.bi.no/studier-og-kurs/soknad-og-opptak/opptakskrav/bachelorstudier/"
+    },
+    {
+     "id": "arsenhet-i-markedsokonomi",
+     "navn": "Markedsøkonomi (årsenhet)",
+     "type": "Årsenhet",
+     "studiepoeng": 60,
+     "sprak": "Norsk",
+     "steder": [
+      "Nettstudier",
+      "Stavanger"
+     ],
+     "minimum": {
+      "alle": 28,
+      "tekst": "Årsenheter: 28 poeng"
+     },
+     "minimum_merknad": null,
+     "prioritert": [],
+     "fagkrav": null,
+     "andre_krav": [],
+     "pris": "86 800 kr per år (heltid), 43 400 kr per år (deltid)",
+     "oppstart": "Høst 2026",
+     "frist": "15. april (prioritert frist, deretter løpende opptak)",
+     "url": "https://www.bi.no/studier-og-kurs/bachelorstudier/arsenhet-i-markedsokonomi/",
+     "kilde_krav": "https://www.bi.no/studier-og-kurs/soknad-og-opptak/opptakskrav/bachelorstudier/"
+    },
+    {
+     "id": "business-administration",
+     "navn": "Business Administration (BBA)",
+     "type": "Bachelor",
+     "studiepoeng": 180,
+     "sprak": "Engelsk",
+     "steder": [
+      "Oslo"
+     ],
+     "minimum": null,
+     "minimum_merknad": "BI oppgir ikke et eget poengtall for de engelskspråklige bachelorprogrammene. Den norske programsiden sier at du trenger «et minimum antall konkurransepoeng», men tallet står ikke.",
+     "prioritert": [],
+     "fagkrav": null,
+     "andre_krav": [
+      "Engelsk: 140 timer fra videregående med karakter 4 eller bedre, eller en godkjent engelsktest"
+     ],
+     "pris": "106 400 kr per år",
+     "oppstart": "Høst 2026",
+     "frist": "15. april (prioritert frist, deretter løpende opptak)",
+     "url": "https://www.bi.no/studier-og-kurs/bachelorstudier/business-administration/",
+     "kilde_krav": "https://www.bi.no/en/programmes-and-individual-courses/admissions/admission-requirements/bachelor-programmes/"
+    },
+    {
+     "id": "digital-business",
+     "navn": "Digital Business",
+     "type": "Bachelor",
+     "studiepoeng": 180,
+     "sprak": "Engelsk",
+     "steder": [
+      "Oslo"
+     ],
+     "minimum": null,
+     "minimum_merknad": "BI oppgir ikke et eget poengtall for de engelskspråklige bachelorprogrammene. Den norske programsiden sier at du trenger «et minimum antall konkurransepoeng», men tallet står ikke.",
+     "prioritert": [],
+     "fagkrav": null,
+     "andre_krav": [
+      "Engelsk: 140 timer fra videregående med karakter 4 eller bedre, eller en godkjent engelsktest"
+     ],
+     "pris": "106 400 kr per år",
+     "oppstart": "Høst 2026",
+     "frist": "15. april (prioritert frist, deretter løpende opptak)",
+     "url": "https://www.bi.no/studier-og-kurs/bachelorstudier/digital-business/",
+     "kilde_krav": "https://www.bi.no/en/programmes-and-individual-courses/admissions/admission-requirements/bachelor-programmes/"
+    },
+    {
+     "id": "data-science-for-business",
+     "navn": "Data Science for Business",
+     "type": "Bachelor",
+     "studiepoeng": 180,
+     "sprak": "Engelsk",
+     "steder": [
+      "Oslo"
+     ],
+     "minimum": null,
+     "minimum_merknad": "BI oppgir ikke et eget poengtall for de engelskspråklige bachelorprogrammene. Den norske programsiden sier at du trenger «et minimum antall konkurransepoeng», men tallet står ikke.",
+     "prioritert": [],
+     "fagkrav": "Matematikk R1, eller S1 + S2",
+     "andre_krav": [
+      "Engelsk: 140 timer fra videregående med karakter 4 eller bedre, eller en godkjent engelsktest"
+     ],
+     "pris": "106 400 kr per år",
+     "oppstart": "Høst 2026",
+     "frist": "15. april (prioritert frist, deretter løpende opptak)",
+     "url": "https://www.bi.no/studier-og-kurs/bachelorstudier/Data-Science-for-Business/",
+     "kilde_krav": "https://www.bi.no/en/programmes-and-individual-courses/admissions/admission-requirements/bachelor-programmes/"
+    }
+   ]
+  },
+  {
+   "id": "kristiania",
+   "navn": "Høyskolen Kristiania",
+   "kort": "Kristiania",
+   "nettside": "https://www.kristiania.no/",
+   "gjelder": "Studiestart høsten 2026",
+   "tittel_ar": "2026",
+   "gjelder_merknad": "Programsidene til Kristiania viser fortsatt opptaket for høsten 2026 (opptaket er stengt). Krav for 2027 er ikke publisert ennå.",
+   "opptak": "Søknadsfrist 15. april, men rullerende opptak frem til 1. september så lenge det er ledige plasser. Fristen kan variere mellom studier.",
+   "poengregel": "Kristiania har ikke minimumskrav i poeng. Er det flere søkere enn plasser, rangeres søkerne etter konkurransepoeng.",
+   "garanti": "Det er ingen poenggrense, men du er ikke garantert plass: når et studium er fullt, stenger opptaket.",
+   "kilder": [
+    {
+     "tittel": "Kristiania – Opptaksinformasjon",
+     "url": "https://www.kristiania.no/studere-hos-oss/opptaksinformasjon/",
+     "oppdatert": null
+    }
+   ],
+   "utelatt": "Doble bachelorgrader (krever en bachelorgrad fra før), Industribachelor (ingen opptakskrav oppgitt) og masterstudier er ikke med.",
+   "studier": [
+    {
+     "frist": "15. april (rullerende opptak etter fristen så lenge det er ledige plasser)",
+     "id": "arsstudium-i-rettsvitenskap",
+     "navn": "Rettsvitenskap (årsstudium)",
+     "type": "Årsstudium",
+     "studiepoeng": 60,
+     "sprak": null,
+     "steder": [
+      "Bergen",
+      "Oslo"
+     ],
+     "minimum": null,
+     "minimum_merknad": "Kristiania oppgir ikke noe minimum antall poeng. Er det flere søkere enn plasser, rangeres søkerne etter konkurransepoeng.",
+     "prioritert": [],
+     "fagkrav": null,
+     "andre_krav": [],
+     "krav_tekst": "Du må innfri krav om generell studiekompetanse eller tilsvarende.",
+     "pris": "50 200 kr per semester",
+     "oppstart": "Høst 2026",
+     "url": "https://www.kristiania.no/studier/aarsstudium/arsstudium-i-rettsvitenskap/",
+     "kilde_krav": "https://www.kristiania.no/studier/aarsstudium/arsstudium-i-rettsvitenskap/"
+    },
+    {
+     "frist": "15. april (rullerende opptak etter fristen så lenge det er ledige plasser)",
+     "id": "arsstudium-personlig-trener-pt",
+     "navn": "Personlig trener (årsstudium)",
+     "type": "Årsstudium",
+     "studiepoeng": 60,
+     "sprak": null,
+     "steder": [
+      "Oslo"
+     ],
+     "minimum": null,
+     "minimum_merknad": "Kristiania oppgir ikke noe minimum antall poeng. Er det flere søkere enn plasser, rangeres søkerne etter konkurransepoeng.",
+     "prioritert": [],
+     "fagkrav": null,
+     "andre_krav": [],
+     "krav_tekst": "Du må innfri krav om generell studiekompetanse eller tilsvarende.",
+     "pris": "60 300 kr per semester",
+     "oppstart": "Høst 2026",
+     "url": "https://www.kristiania.no/studier/aarsstudium/arsstudium-personlig-trener-pt/",
+     "kilde_krav": "https://www.kristiania.no/studier/aarsstudium/arsstudium-personlig-trener-pt/"
+    },
+    {
+     "frist": "15. april (rullerende opptak etter fristen så lenge det er ledige plasser)",
+     "id": "ernaring-og-helse",
+     "navn": "Ernæring og helse (årsstudium)",
+     "type": "Årsstudium",
+     "studiepoeng": 60,
+     "sprak": null,
+     "steder": [
+      "Oslo"
+     ],
+     "minimum": null,
+     "minimum_merknad": "Kristiania oppgir ikke noe minimum antall poeng. Er det flere søkere enn plasser, rangeres søkerne etter konkurransepoeng.",
+     "prioritert": [],
+     "fagkrav": null,
+     "andre_krav": [],
+     "krav_tekst": "Du må innfri krav om generell studiekompetanse eller tilsvarende.",
+     "pris": "50 200 kr per semester",
+     "oppstart": "Høst 2026",
+     "url": "https://www.kristiania.no/studier/aarsstudium/ernaring-og-helse/",
+     "kilde_krav": "https://www.kristiania.no/studier/aarsstudium/ernaring-og-helse/"
+    },
+    {
+     "frist": "15. april (rullerende opptak etter fristen så lenge det er ledige plasser)",
+     "id": "grunnmedisin",
+     "navn": "Grunnmedisin (årsstudium)",
+     "type": "Årsstudium",
+     "studiepoeng": 60,
+     "sprak": null,
+     "steder": [
+      "Oslo"
+     ],
+     "minimum": null,
+     "minimum_merknad": "Kristiania oppgir ikke noe minimum antall poeng. Er det flere søkere enn plasser, rangeres søkerne etter konkurransepoeng.",
+     "prioritert": [],
+     "fagkrav": null,
+     "andre_krav": [],
+     "krav_tekst": "Du må innfri krav om generell studiekompetanse eller tilsvarende.",
+     "pris": "50 200 kr per semester",
+     "oppstart": "Høst 2026",
+     "url": "https://www.kristiania.no/studier/aarsstudium/grunnmedisin/",
+     "kilde_krav": "https://www.kristiania.no/studier/aarsstudium/grunnmedisin/"
+    },
+    {
+     "frist": "15. april (rullerende opptak etter fristen så lenge det er ledige plasser)",
+     "id": "informasjonsteknologi-it",
+     "navn": "Informasjonsteknologi (årsstudium)",
+     "type": "Årsstudium",
+     "studiepoeng": 60,
+     "sprak": null,
+     "steder": [
+      "Bergen",
+      "Oslo"
+     ],
+     "minimum": null,
+     "minimum_merknad": "Kristiania oppgir ikke noe minimum antall poeng. Er det flere søkere enn plasser, rangeres søkerne etter konkurransepoeng.",
+     "prioritert": [],
+     "fagkrav": null,
+     "andre_krav": [],
+     "krav_tekst": "Du må innfri krav om generell studiekompetanse eller tilsvarende.",
+     "pris": "56 600 kr per semester",
+     "oppstart": "Høst 2026",
+     "url": "https://www.kristiania.no/studier/aarsstudium/informasjonsteknologi-it/",
+     "kilde_krav": "https://www.kristiania.no/studier/aarsstudium/informasjonsteknologi-it/"
+    },
+    {
+     "frist": "15. april (rullerende opptak etter fristen så lenge det er ledige plasser)",
+     "id": "kommunikasjon",
+     "navn": "Kommunikasjon (årsstudium)",
+     "type": "Årsstudium",
+     "studiepoeng": 60,
+     "sprak": null,
+     "steder": [
+      "Oslo"
+     ],
+     "minimum": null,
+     "minimum_merknad": "Kristiania oppgir ikke noe minimum antall poeng. Er det flere søkere enn plasser, rangeres søkerne etter konkurransepoeng.",
+     "prioritert": [],
+     "fagkrav": null,
+     "andre_krav": [],
+     "krav_tekst": "Du må innfri krav om generell studiekompetanse eller tilsvarende.",
+     "pris": "42 000 kr per semester",
+     "oppstart": "Høst 2026",
+     "url": "https://www.kristiania.no/studier/aarsstudium/kommunikasjon/",
+     "kilde_krav": "https://www.kristiania.no/studier/aarsstudium/kommunikasjon/"
+    },
+    {
+     "frist": "15. april (rullerende opptak etter fristen så lenge det er ledige plasser)",
+     "id": "markedsforing",
+     "navn": "Markedsføring (årsstudium)",
+     "type": "Årsstudium",
+     "studiepoeng": 60,
+     "sprak": null,
+     "steder": [
+      "Bergen",
+      "Oslo"
+     ],
+     "minimum": null,
+     "minimum_merknad": "Kristiania oppgir ikke noe minimum antall poeng. Er det flere søkere enn plasser, rangeres søkerne etter konkurransepoeng.",
+     "prioritert": [],
+     "fagkrav": null,
+     "andre_krav": [],
+     "krav_tekst": "Du må innfri krav om generell studiekompetanse eller tilsvarende.",
+     "pris": "42 000 kr per semester",
+     "oppstart": "Høst 2026",
+     "url": "https://www.kristiania.no/studier/aarsstudium/markedsforing/",
+     "kilde_krav": "https://www.kristiania.no/studier/aarsstudium/markedsforing/"
+    },
+    {
+     "frist": "15. april (rullerende opptak etter fristen så lenge det er ledige plasser)",
+     "id": "musikk",
+     "navn": "Musikk (årsstudium)",
+     "type": "Årsstudium",
+     "studiepoeng": 60,
+     "sprak": null,
+     "steder": [
+      "Oslo"
+     ],
+     "minimum": null,
+     "minimum_merknad": "Kristiania oppgir ikke noe minimum antall poeng. Er det flere søkere enn plasser, rangeres søkerne etter konkurransepoeng.",
+     "prioritert": [],
+     "fagkrav": null,
+     "andre_krav": [
+      "Opptaksprøve"
+     ],
+     "krav_tekst": "Generell studiekompetanse eller tilsvarende, i tillegg må du levere opptaksprøve. Les mer nederst på siden.",
+     "pris": "62 100 kr per semester",
+     "oppstart": "Høst 2026",
+     "url": "https://www.kristiania.no/studier/aarsstudium/musikk/",
+     "kilde_krav": "https://www.kristiania.no/studier/aarsstudium/musikk/"
+    },
+    {
+     "frist": "15. april (rullerende opptak etter fristen så lenge det er ledige plasser)",
+     "id": "pedagogikk",
+     "navn": "Pedagogikk (årsstudium)",
+     "type": "Årsstudium",
+     "studiepoeng": 60,
+     "sprak": null,
+     "steder": [
+      "Oslo"
+     ],
+     "minimum": null,
+     "minimum_merknad": "Kristiania oppgir ikke noe minimum antall poeng. Er det flere søkere enn plasser, rangeres søkerne etter konkurransepoeng.",
+     "prioritert": [],
+     "fagkrav": null,
+     "andre_krav": [],
+     "krav_tekst": "Du må innfri krav om generell studiekompetanse eller tilsvarende.",
+     "pris": "50 200 kr per semester",
+     "oppstart": "Høst 2026",
+     "url": "https://www.kristiania.no/studier/aarsstudium/pedagogikk/",
+     "kilde_krav": "https://www.kristiania.no/studier/aarsstudium/pedagogikk/"
+    },
+    {
+     "frist": "15. april (rullerende opptak etter fristen så lenge det er ledige plasser)",
+     "id": "psykologi",
+     "navn": "Psykologi (årsstudium)",
+     "type": "Årsstudium",
+     "studiepoeng": 60,
+     "sprak": null,
+     "steder": [
+      "Bergen",
+      "Oslo"
+     ],
+     "minimum": null,
+     "minimum_merknad": "Kristiania oppgir ikke noe minimum antall poeng. Er det flere søkere enn plasser, rangeres søkerne etter konkurransepoeng.",
+     "prioritert": [],
+     "fagkrav": null,
+     "andre_krav": [],
+     "krav_tekst": "Du må innfri krav om generell studiekompetanse eller tilsvarende.",
+     "pris": "50 200 kr per semester",
+     "oppstart": "Høst 2026",
+     "url": "https://www.kristiania.no/studier/aarsstudium/psykologi/",
+     "kilde_krav": "https://www.kristiania.no/studier/aarsstudium/psykologi/"
+    },
+    {
+     "frist": "15. april (rullerende opptak etter fristen så lenge det er ledige plasser)",
+     "id": "anvendt-folkehelsearbeid",
+     "navn": "Helsefremmende arbeid og mental helse",
+     "type": "Bachelor",
+     "studiepoeng": 180,
+     "sprak": null,
+     "steder": [
+      "Oslo"
+     ],
+     "minimum": null,
+     "minimum_merknad": "Kristiania oppgir ikke noe minimum antall poeng. Er det flere søkere enn plasser, rangeres søkerne etter konkurransepoeng.",
+     "prioritert": [],
+     "fagkrav": null,
+     "andre_krav": [
+      "Politiattest"
+     ],
+     "krav_tekst": "Du må innfri krav om generell studiekompetanse eller tilsvarende. Du må også levere politiattest.",
+     "pris": "56 000 kr per semester",
+     "oppstart": "Høst 2026",
+     "url": "https://www.kristiania.no/studier/bachelor/anvendt-folkehelsearbeid/",
+     "kilde_krav": "https://www.kristiania.no/studier/bachelor/anvendt-folkehelsearbeid/"
+    },
+    {
+     "frist": "15. april (rullerende opptak etter fristen så lenge det er ledige plasser)",
+     "id": "anvendt-psykologi",
+     "navn": "Anvendt psykologi",
+     "type": "Bachelor",
+     "studiepoeng": 180,
+     "sprak": null,
+     "steder": [
+      "Bergen",
+      "Oslo"
+     ],
+     "minimum": null,
+     "minimum_merknad": "Kristiania oppgir ikke noe minimum antall poeng. Er det flere søkere enn plasser, rangeres søkerne etter konkurransepoeng.",
+     "prioritert": [],
+     "fagkrav": null,
+     "andre_krav": [],
+     "krav_tekst": "Du må innfri krav om generell studiekompetanse eller tilsvarende.",
+     "pris": "50 200 kr per semester",
+     "oppstart": "Høst 2026",
+     "url": "https://www.kristiania.no/studier/bachelor/anvendt-psykologi/",
+     "kilde_krav": "https://www.kristiania.no/studier/bachelor/anvendt-psykologi/"
+    },
+    {
+     "frist": "15. april (rullerende opptak etter fristen så lenge det er ledige plasser)",
+     "id": "art-direction",
+     "navn": "Art Direction",
+     "type": "Bachelor",
+     "studiepoeng": 180,
+     "sprak": null,
+     "steder": [
+      "Oslo"
+     ],
+     "minimum": null,
+     "minimum_merknad": "Kristiania oppgir ikke noe minimum antall poeng. Er det flere søkere enn plasser, rangeres søkerne etter konkurransepoeng.",
+     "prioritert": [],
+     "fagkrav": null,
+     "andre_krav": [
+      "Opptaksprøve"
+     ],
+     "krav_tekst": "På dette studiet må du innfri krav om generell studiekompetanse eller tilsvarende. Du må også levere opptaksprøve. Les mer om opptaksprøvene her.",
+     "pris": "62 100 kr per semester",
+     "oppstart": "Høst 2026",
+     "url": "https://www.kristiania.no/studier/bachelor/art-direction/",
+     "kilde_krav": "https://www.kristiania.no/studier/bachelor/art-direction/"
+    },
+    {
+     "frist": "15. april (rullerende opptak etter fristen så lenge det er ledige plasser)",
+     "id": "artificial-intelligence",
+     "navn": "Artificial Intelligence",
+     "type": "Bachelor",
+     "studiepoeng": 180,
+     "sprak": null,
+     "steder": [
+      "Oslo"
+     ],
+     "minimum": null,
+     "minimum_merknad": "Kristiania oppgir ikke noe minimum antall poeng. Er det flere søkere enn plasser, rangeres søkerne etter konkurransepoeng.",
+     "prioritert": [],
+     "fagkrav": "Matematikk R1, eller S1 + S2",
+     "andre_krav": [],
+     "krav_tekst": "På dette studiet må du innfri krav om generell studiekompetanse. Du må også ha bestått matematikk R1 eller S1+S2.",
+     "pris": "54 200 kr per semester",
+     "oppstart": "Høst 2025",
+     "url": "https://www.kristiania.no/studier/bachelor/artificial-intelligence/",
+     "kilde_krav": "https://www.kristiania.no/studier/bachelor/artificial-intelligence/"
+    },
+    {
+     "frist": "15. april (rullerende opptak etter fristen så lenge det er ledige plasser)",
+     "id": "bachelor-i-ledelse---arbeidsintegrert",
+     "navn": "Ledelse – utdanning med praksis",
+     "type": "Bachelor",
+     "studiepoeng": 180,
+     "sprak": null,
+     "steder": [
+      "Oslo"
+     ],
+     "minimum": null,
+     "minimum_merknad": "Kristiania oppgir ikke noe minimum antall poeng. Er det flere søkere enn plasser, rangeres søkerne etter konkurransepoeng.",
+     "prioritert": [],
+     "fagkrav": null,
+     "andre_krav": [],
+     "krav_tekst": "Du må innfri krav om generell studiekompetanse eller tilsvarende.",
+     "pris": "40 200 kr per semester",
+     "oppstart": "Høst 2025",
+     "url": "https://www.kristiania.no/studier/bachelor/bachelor-i-ledelse---arbeidsintegrert/",
+     "kilde_krav": "https://www.kristiania.no/studier/bachelor/bachelor-i-ledelse---arbeidsintegrert/"
+    },
+    {
+     "frist": "15. april (rullerende opptak etter fristen så lenge det er ledige plasser)",
+     "id": "biomedisin",
+     "navn": "Biomedisin",
+     "type": "Bachelor",
+     "studiepoeng": 180,
+     "sprak": null,
+     "steder": [
+      "Oslo"
+     ],
+     "minimum": null,
+     "minimum_merknad": "Kristiania oppgir ikke noe minimum antall poeng. Er det flere søkere enn plasser, rangeres søkerne etter konkurransepoeng.",
+     "prioritert": [],
+     "fagkrav": null,
+     "andre_krav": [],
+     "krav_tekst": "Du må innfri krav om generell studiekompetanse eller tilsvarende.",
+     "pris": "50 200 kr per semester i 1. og 2. semester, deretter 65 400 kr per semester",
+     "oppstart": "Høst 2026",
+     "url": "https://www.kristiania.no/studier/bachelor/biomedisin/",
+     "kilde_krav": "https://www.kristiania.no/studier/bachelor/biomedisin/"
+    },
+    {
+     "frist": "15. april (rullerende opptak etter fristen så lenge det er ledige plasser)",
+     "id": "computer-arts",
+     "navn": "Computer Arts",
+     "type": "Bachelor",
+     "studiepoeng": 180,
+     "sprak": null,
+     "steder": [
+      "Oslo"
+     ],
+     "minimum": null,
+     "minimum_merknad": "Kristiania oppgir ikke noe minimum antall poeng. Er det flere søkere enn plasser, rangeres søkerne etter konkurransepoeng.",
+     "prioritert": [],
+     "fagkrav": null,
+     "andre_krav": [],
+     "krav_tekst": "Du må innfri krav om generell studiekompetanse eller tilsvarende.",
+     "pris": "62 100 kr per semester",
+     "oppstart": "Høst 2026",
+     "url": "https://www.kristiania.no/studier/bachelor/computer-arts/",
+     "kilde_krav": "https://www.kristiania.no/studier/bachelor/computer-arts/"
+    },
+    {
+     "frist": "15. april (rullerende opptak etter fristen så lenge det er ledige plasser)",
+     "id": "cybersikkerhet",
+     "navn": "Cybersikkerhet",
+     "type": "Bachelor",
+     "studiepoeng": 180,
+     "sprak": null,
+     "steder": [
+      "Bergen",
+      "Oslo"
+     ],
+     "minimum": null,
+     "minimum_merknad": "Kristiania oppgir ikke noe minimum antall poeng. Er det flere søkere enn plasser, rangeres søkerne etter konkurransepoeng.",
+     "prioritert": [],
+     "fagkrav": null,
+     "andre_krav": [],
+     "krav_tekst": "Du må innfri krav om generell studiekompetanse eller tilsvarende.",
+     "pris": "56 600 kr per semester",
+     "oppstart": "Høst 2026",
+     "url": "https://www.kristiania.no/studier/bachelor/cybersikkerhet/",
+     "kilde_krav": "https://www.kristiania.no/studier/bachelor/cybersikkerhet/"
+    },
+    {
+     "frist": "15. april (rullerende opptak etter fristen så lenge det er ledige plasser)",
+     "id": "dansekunst",
+     "navn": "Dansekunst (jazzdans)",
+     "type": "Bachelor",
+     "studiepoeng": 180,
+     "sprak": null,
+     "steder": [
+      "Oslo"
+     ],
+     "minimum": null,
+     "minimum_merknad": "Kristiania oppgir ikke noe minimum antall poeng. Er det flere søkere enn plasser, rangeres søkerne etter konkurransepoeng.",
+     "prioritert": [],
+     "fagkrav": null,
+     "andre_krav": [
+      "Opptaksprøve"
+     ],
+     "krav_tekst": "På dette studiet må du innfri krav om generell studiekompetanse. Tilfredsstiller du spesielle faglige krav kan du søke om unntak. Du må også levere opptaksprøve.",
+     "pris": "59 500 og 62 100 kr per semester",
+     "oppstart": "Høst 2025 og Høst 2026",
+     "url": "https://www.kristiania.no/studier/bachelor/dansekunst/",
+     "kilde_krav": "https://www.kristiania.no/studier/bachelor/dansekunst/"
+    },
+    {
+     "frist": "15. april (rullerende opptak etter fristen så lenge det er ledige plasser)",
+     "id": "data-science",
+     "navn": "Data Science",
+     "type": "Bachelor",
+     "studiepoeng": 180,
+     "sprak": null,
+     "steder": [
+      "Oslo"
+     ],
+     "minimum": null,
+     "minimum_merknad": "Kristiania oppgir ikke noe minimum antall poeng. Er det flere søkere enn plasser, rangeres søkerne etter konkurransepoeng.",
+     "prioritert": [],
+     "fagkrav": "Matematikk R1, eller S1 + S2",
+     "andre_krav": [],
+     "krav_tekst": "På dette studiet må du innfri krav om generell studiekompetanse. Du må også ha bestått matematikk R1 eller S1+S2.",
+     "pris": "54 200 kr per semester",
+     "oppstart": "Høst 2025",
+     "url": "https://www.kristiania.no/studier/bachelor/data-science/",
+     "kilde_krav": "https://www.kristiania.no/studier/bachelor/data-science/"
+    },
+    {
+     "frist": "15. april (rullerende opptak etter fristen så lenge det er ledige plasser)",
+     "id": "design",
+     "navn": "Design",
+     "type": "Bachelor",
+     "studiepoeng": 180,
+     "sprak": null,
+     "steder": [
+      "Oslo"
+     ],
+     "minimum": null,
+     "minimum_merknad": "Kristiania oppgir ikke noe minimum antall poeng. Er det flere søkere enn plasser, rangeres søkerne etter konkurransepoeng.",
+     "prioritert": [],
+     "fagkrav": null,
+     "andre_krav": [],
+     "krav_tekst": "Du må innfri krav om generell studiekompetanse eller tilsvarende.",
+     "pris": "62 100 kr per semester",
+     "oppstart": "Høst 2026",
+     "url": "https://www.kristiania.no/studier/bachelor/design/",
+     "kilde_krav": "https://www.kristiania.no/studier/bachelor/design/"
+    },
+    {
+     "frist": "15. april (rullerende opptak etter fristen så lenge det er ledige plasser)",
+     "id": "digital-markedsforing-og-salgsledelse",
+     "navn": "Digital markedsføring og salgsledelse",
+     "type": "Bachelor",
+     "studiepoeng": 180,
+     "sprak": null,
+     "steder": [
+      "Bergen",
+      "Oslo"
+     ],
+     "minimum": null,
+     "minimum_merknad": "Kristiania oppgir ikke noe minimum antall poeng. Er det flere søkere enn plasser, rangeres søkerne etter konkurransepoeng.",
+     "prioritert": [],
+     "fagkrav": null,
+     "andre_krav": [],
+     "krav_tekst": "Du må innfri krav om generell studiekompetanse eller tilsvarende.",
+     "pris": "42 000 kr per semester",
+     "oppstart": "Høst 2026",
+     "url": "https://www.kristiania.no/studier/bachelor/digital-markedsforing-og-salgsledelse/",
+     "kilde_krav": "https://www.kristiania.no/studier/bachelor/digital-markedsforing-og-salgsledelse/"
+    },
+    {
+     "frist": "15. april (rullerende opptak etter fristen så lenge det er ledige plasser)",
+     "id": "digital-markedsforing",
+     "navn": "Digital markedsføring",
+     "type": "Bachelor",
+     "studiepoeng": 180,
+     "sprak": null,
+     "steder": [
+      "Oslo"
+     ],
+     "minimum": null,
+     "minimum_merknad": "Kristiania oppgir ikke noe minimum antall poeng. Er det flere søkere enn plasser, rangeres søkerne etter konkurransepoeng.",
+     "prioritert": [],
+     "fagkrav": null,
+     "andre_krav": [],
+     "krav_tekst": "Du må innfri krav om generell studiekompetanse eller tilsvarende.",
+     "pris": "42 000 kr per semester",
+     "oppstart": "Høst 2026",
+     "url": "https://www.kristiania.no/studier/bachelor/digital-markedsforing/",
+     "kilde_krav": "https://www.kristiania.no/studier/bachelor/digital-markedsforing/"
+    },
+    {
+     "frist": "15. april (rullerende opptak etter fristen så lenge det er ledige plasser)",
+     "id": "film-tv-og-medier",
+     "navn": "Film, TV og medier",
+     "type": "Bachelor",
+     "studiepoeng": 180,
+     "sprak": null,
+     "steder": [
+      "Oslo"
+     ],
+     "minimum": null,
+     "minimum_merknad": "Kristiania oppgir ikke noe minimum antall poeng. Er det flere søkere enn plasser, rangeres søkerne etter konkurransepoeng.",
+     "prioritert": [],
+     "fagkrav": null,
+     "andre_krav": [],
+     "krav_tekst": "Du må innfri krav om generell studiekompetanse eller tilsvarende.",
+     "pris": "62 100 kr per semester",
+     "oppstart": "Høst 2026",
+     "url": "https://www.kristiania.no/studier/bachelor/film-tv-og-medier/",
+     "kilde_krav": "https://www.kristiania.no/studier/bachelor/film-tv-og-medier/"
+    },
+    {
+     "frist": "15. april (rullerende opptak etter fristen så lenge det er ledige plasser)",
+     "id": "fysisk-aktivitet-og-ernaring",
+     "navn": "Ernæring, trening og helse",
+     "type": "Bachelor",
+     "studiepoeng": 180,
+     "sprak": null,
+     "steder": [
+      "Oslo"
+     ],
+     "minimum": null,
+     "minimum_merknad": "Kristiania oppgir ikke noe minimum antall poeng. Er det flere søkere enn plasser, rangeres søkerne etter konkurransepoeng.",
+     "prioritert": [],
+     "fagkrav": null,
+     "andre_krav": [
+      "Politiattest (ved enkelte praksisplasser)"
+     ],
+     "krav_tekst": "Du må innfri krav om generell studiekompetanse eller tilsvarende. Ved enkelte praksisplasser må du fremlegge politiattest.",
+     "pris": "60 300 kr per semester",
+     "oppstart": "Høst 2026",
+     "url": "https://www.kristiania.no/studier/bachelor/fysisk-aktivitet-og-ernaring/",
+     "kilde_krav": "https://www.kristiania.no/studier/bachelor/fysisk-aktivitet-og-ernaring/"
+    },
+    {
+     "frist": "15. april (rullerende opptak etter fristen så lenge det er ledige plasser)",
+     "id": "hr-og-personalledelse",
+     "navn": "HR og personalledelse",
+     "type": "Bachelor",
+     "studiepoeng": 180,
+     "sprak": null,
+     "steder": [
+      "Bergen",
+      "Oslo"
+     ],
+     "minimum": null,
+     "minimum_merknad": "Kristiania oppgir ikke noe minimum antall poeng. Er det flere søkere enn plasser, rangeres søkerne etter konkurransepoeng.",
+     "prioritert": [],
+     "fagkrav": null,
+     "andre_krav": [],
+     "krav_tekst": "Du må innfri krav om generell studiekompetanse eller tilsvarende.",
+     "pris": "42 000 kr per semester",
+     "oppstart": "Høst 2026",
+     "url": "https://www.kristiania.no/studier/bachelor/hr-og-personalledelse/",
+     "kilde_krav": "https://www.kristiania.no/studier/bachelor/hr-og-personalledelse/"
+    },
+    {
+     "frist": "15. april (rullerende opptak etter fristen så lenge det er ledige plasser)",
+     "id": "hr-organisasjonspsykologi-ledelse",
+     "navn": "HR, organisasjonspsykologi og ledelse",
+     "type": "Bachelor",
+     "studiepoeng": 180,
+     "sprak": null,
+     "steder": [
+      "Bergen",
+      "Oslo"
+     ],
+     "minimum": null,
+     "minimum_merknad": "Kristiania oppgir ikke noe minimum antall poeng. Er det flere søkere enn plasser, rangeres søkerne etter konkurransepoeng.",
+     "prioritert": [],
+     "fagkrav": null,
+     "andre_krav": [],
+     "krav_tekst": "Du må innfri krav om generell studiekompetanse eller tilsvarende.",
+     "pris": "42 000 kr per semester",
+     "oppstart": "Høst 2026",
+     "url": "https://www.kristiania.no/studier/bachelor/hr-organisasjonspsykologi-ledelse/",
+     "kilde_krav": "https://www.kristiania.no/studier/bachelor/hr-organisasjonspsykologi-ledelse/"
+    },
+    {
+     "frist": "15. april (rullerende opptak etter fristen så lenge det er ledige plasser)",
+     "id": "hr-teknologi-og-digitaliseringsledelse",
+     "navn": "HR, teknologi og digitaliseringsledelse",
+     "type": "Bachelor",
+     "studiepoeng": 180,
+     "sprak": null,
+     "steder": [
+      "Oslo"
+     ],
+     "minimum": null,
+     "minimum_merknad": "Kristiania oppgir ikke noe minimum antall poeng. Er det flere søkere enn plasser, rangeres søkerne etter konkurransepoeng.",
+     "prioritert": [],
+     "fagkrav": null,
+     "andre_krav": [],
+     "krav_tekst": "Du må innfri krav om generell studiekompetanse eller tilsvarende.",
+     "pris": "42 000 kr per semester",
+     "oppstart": "Høst 2026",
+     "url": "https://www.kristiania.no/studier/bachelor/hr-teknologi-og-digitaliseringsledelse/",
+     "kilde_krav": "https://www.kristiania.no/studier/bachelor/hr-teknologi-og-digitaliseringsledelse/"
+    },
+    {
+     "frist": "15. april (rullerende opptak etter fristen så lenge det er ledige plasser)",
+     "id": "informasjonsteknologi-fullstack-utvikling",
+     "navn": "Informasjonsteknologi – fullstack-utvikling",
+     "type": "Bachelor",
+     "studiepoeng": 180,
+     "sprak": null,
+     "steder": [
+      "Oslo"
+     ],
+     "minimum": null,
+     "minimum_merknad": "Kristiania oppgir ikke noe minimum antall poeng. Er det flere søkere enn plasser, rangeres søkerne etter konkurransepoeng.",
+     "prioritert": [],
+     "fagkrav": null,
+     "andre_krav": [],
+     "krav_tekst": "Du må innfri krav om generell studiekompetanse eller tilsvarende.",
+     "pris": "56 600 kr per semester",
+     "oppstart": "Høst 2026",
+     "url": "https://www.kristiania.no/studier/bachelor/informasjonsteknologi-fullstack-utvikling/",
+     "kilde_krav": "https://www.kristiania.no/studier/bachelor/informasjonsteknologi-fullstack-utvikling/"
+    },
+    {
+     "frist": "15. april (rullerende opptak etter fristen så lenge det er ledige plasser)",
+     "id": "innovasjon-og-forretningsutvikling",
+     "navn": "Innovasjon og forretningsutvikling",
+     "type": "Bachelor",
+     "studiepoeng": 180,
+     "sprak": null,
+     "steder": [
+      "Bergen",
+      "Oslo"
+     ],
+     "minimum": null,
+     "minimum_merknad": "Kristiania oppgir ikke noe minimum antall poeng. Er det flere søkere enn plasser, rangeres søkerne etter konkurransepoeng.",
+     "prioritert": [],
+     "fagkrav": null,
+     "andre_krav": [],
+     "krav_tekst": "Du må innfri krav om generell studiekompetanse eller tilsvarende.",
+     "pris": "42 000 kr per semester",
+     "oppstart": "Høst 2026",
+     "url": "https://www.kristiania.no/studier/bachelor/innovasjon-og-forretningsutvikling/",
+     "kilde_krav": "https://www.kristiania.no/studier/bachelor/innovasjon-og-forretningsutvikling/"
+    },
+    {
+     "frist": "15. april (rullerende opptak etter fristen så lenge det er ledige plasser)",
+     "id": "interiorarkitektur",
+     "navn": "Interiørarkitektur",
+     "type": "Bachelor",
+     "studiepoeng": 180,
+     "sprak": null,
+     "steder": [
+      "Oslo"
+     ],
+     "minimum": null,
+     "minimum_merknad": "Kristiania oppgir ikke noe minimum antall poeng. Er det flere søkere enn plasser, rangeres søkerne etter konkurransepoeng.",
+     "prioritert": [],
+     "fagkrav": null,
+     "andre_krav": [
+      "Opptaksprøve"
+     ],
+     "krav_tekst": "På dette studiet må du innfri krav om generell studiekompetanse eller tilsvarende. Du må også levere opptaksprøve. Les mer om opptaksprøvene her.",
+     "pris": "62 100 kr per semester",
+     "oppstart": "Høst 2026",
+     "url": "https://www.kristiania.no/studier/bachelor/interiorarkitektur/",
+     "kilde_krav": "https://www.kristiania.no/studier/bachelor/interiorarkitektur/"
+    },
+    {
+     "frist": "15. april (rullerende opptak etter fristen så lenge det er ledige plasser)",
+     "id": "journalistikk",
+     "navn": "Journalistikk",
+     "type": "Bachelor",
+     "studiepoeng": 180,
+     "sprak": null,
+     "steder": [
+      "Oslo"
+     ],
+     "minimum": null,
+     "minimum_merknad": "Kristiania oppgir ikke noe minimum antall poeng. Er det flere søkere enn plasser, rangeres søkerne etter konkurransepoeng.",
+     "prioritert": [],
+     "fagkrav": null,
+     "andre_krav": [],
+     "krav_tekst": "Du må innfri krav om generell studiekompetanse eller tilsvarende.",
+     "pris": "60 900 kr per semester",
+     "oppstart": "Høst 2026",
+     "url": "https://www.kristiania.no/studier/bachelor/journalistikk/",
+     "kilde_krav": "https://www.kristiania.no/studier/bachelor/journalistikk/"
+    },
+    {
+     "frist": "15. april (rullerende opptak etter fristen så lenge det er ledige plasser)",
+     "id": "ledelse-for-kunst-og-kreativ-naring",
+     "navn": "Ledelse for kunst og kreativ næring",
+     "type": "Bachelor",
+     "studiepoeng": 180,
+     "sprak": null,
+     "steder": [
+      "Oslo"
+     ],
+     "minimum": null,
+     "minimum_merknad": "Kristiania oppgir ikke noe minimum antall poeng. Er det flere søkere enn plasser, rangeres søkerne etter konkurransepoeng.",
+     "prioritert": [],
+     "fagkrav": null,
+     "andre_krav": [],
+     "krav_tekst": "Du må innfri krav om generell studiekompetanse eller tilsvarende.",
+     "pris": "62 100 kr per semester",
+     "oppstart": "Høst 2026",
+     "url": "https://www.kristiania.no/studier/bachelor/ledelse-for-kunst-og-kreativ-naring/",
+     "kilde_krav": "https://www.kristiania.no/studier/bachelor/ledelse-for-kunst-og-kreativ-naring/"
+    },
+    {
+     "frist": "15. april (rullerende opptak etter fristen så lenge det er ledige plasser)",
+     "id": "logistikk-og-supply-chain-management",
+     "navn": "Supply Chain Management og logistikk",
+     "type": "Bachelor",
+     "studiepoeng": 180,
+     "sprak": null,
+     "steder": [
+      "Oslo"
+     ],
+     "minimum": null,
+     "minimum_merknad": "Kristiania oppgir ikke noe minimum antall poeng. Er det flere søkere enn plasser, rangeres søkerne etter konkurransepoeng.",
+     "prioritert": [],
+     "fagkrav": null,
+     "andre_krav": [],
+     "krav_tekst": "Du må innfri krav om generell studiekompetanse eller tilsvarende.",
+     "pris": "42 000 kr per semester",
+     "oppstart": "Høst 2026",
+     "url": "https://www.kristiania.no/studier/bachelor/logistikk-og-supply-chain-management/",
+     "kilde_krav": "https://www.kristiania.no/studier/bachelor/logistikk-og-supply-chain-management/"
+    },
+    {
+     "frist": "15. april (rullerende opptak etter fristen så lenge det er ledige plasser)",
+     "id": "markedsforing-og-forretningsutvikling",
+     "navn": "Markedsføring og forretningsutvikling",
+     "type": "Bachelor",
+     "studiepoeng": 180,
+     "sprak": null,
+     "steder": [
+      "Oslo"
+     ],
+     "minimum": null,
+     "minimum_merknad": "Kristiania oppgir ikke noe minimum antall poeng. Er det flere søkere enn plasser, rangeres søkerne etter konkurransepoeng.",
+     "prioritert": [],
+     "fagkrav": null,
+     "andre_krav": [],
+     "krav_tekst": "Du må innfri krav om generell studiekompetanse eller tilsvarende.",
+     "pris": "42 000 kr per semester",
+     "oppstart": "Høst 2026",
+     "url": "https://www.kristiania.no/studier/bachelor/markedsforing-og-forretningsutvikling/",
+     "kilde_krav": "https://www.kristiania.no/studier/bachelor/markedsforing-og-forretningsutvikling/"
+    },
+    {
+     "frist": "15. april (rullerende opptak etter fristen så lenge det er ledige plasser)",
+     "id": "markedsforing-og-merkevareledelse",
+     "navn": "Markedsføring og merkevareledelse",
+     "type": "Bachelor",
+     "studiepoeng": 180,
+     "sprak": null,
+     "steder": [
+      "Bergen",
+      "Oslo"
+     ],
+     "minimum": null,
+     "minimum_merknad": "Kristiania oppgir ikke noe minimum antall poeng. Er det flere søkere enn plasser, rangeres søkerne etter konkurransepoeng.",
+     "prioritert": [],
+     "fagkrav": null,
+     "andre_krav": [],
+     "krav_tekst": "Du må innfri krav om generell studiekompetanse eller tilsvarende.",
+     "pris": "42 000 kr per semester",
+     "oppstart": "Høst 2026",
+     "url": "https://www.kristiania.no/studier/bachelor/markedsforing-og-merkevareledelse/",
+     "kilde_krav": "https://www.kristiania.no/studier/bachelor/markedsforing-og-merkevareledelse/"
+    },
+    {
+     "frist": "15. april (rullerende opptak etter fristen så lenge det er ledige plasser)",
+     "id": "medier-og-kommunikasjon",
+     "navn": "Medier og kommunikasjon",
+     "type": "Bachelor",
+     "studiepoeng": 180,
+     "sprak": null,
+     "steder": [
+      "Oslo"
+     ],
+     "minimum": null,
+     "minimum_merknad": "Kristiania oppgir ikke noe minimum antall poeng. Er det flere søkere enn plasser, rangeres søkerne etter konkurransepoeng.",
+     "prioritert": [],
+     "fagkrav": null,
+     "andre_krav": [],
+     "krav_tekst": "Du må innfri krav om generell studiekompetanse eller tilsvarende.",
+     "pris": "42 000 kr per semester",
+     "oppstart": "Høst 2026",
+     "url": "https://www.kristiania.no/studier/bachelor/medier-og-kommunikasjon/",
+     "kilde_krav": "https://www.kristiania.no/studier/bachelor/medier-og-kommunikasjon/"
+    },
+    {
+     "frist": "15. april (rullerende opptak etter fristen så lenge det er ledige plasser)",
+     "id": "musikk",
+     "navn": "Musikk",
+     "type": "Bachelor",
+     "studiepoeng": 180,
+     "sprak": null,
+     "steder": [
+      "Oslo"
+     ],
+     "minimum": null,
+     "minimum_merknad": "Kristiania oppgir ikke noe minimum antall poeng. Er det flere søkere enn plasser, rangeres søkerne etter konkurransepoeng.",
+     "prioritert": [],
+     "fagkrav": null,
+     "andre_krav": [
+      "Opptaksprøve"
+     ],
+     "krav_tekst": "Generell studiekompetanse eller tilsvarende, i tillegg må du levere opptaksprøve. Les mer nederst på siden.",
+     "pris": "62 100 kr per semester",
+     "oppstart": "Høst 2026",
+     "url": "https://www.kristiania.no/studier/bachelor/musikk/",
+     "kilde_krav": "https://www.kristiania.no/studier/bachelor/musikk/"
+    },
+    {
+     "frist": "15. februar (opptaksprøven må leveres innen fristen)",
+     "id": "musikkteater",
+     "navn": "Musikkteater",
+     "type": "Bachelor",
+     "studiepoeng": 180,
+     "sprak": null,
+     "steder": [
+      "Oslo"
+     ],
+     "minimum": null,
+     "minimum_merknad": "Kristiania oppgir ikke noe minimum antall poeng. Er det flere søkere enn plasser, rangeres søkerne etter konkurransepoeng.",
+     "prioritert": [],
+     "fagkrav": null,
+     "andre_krav": [
+      "Opptaksprøve"
+     ],
+     "krav_tekst": "På dette studiet må du innfri krav om generell studiekompetanse. Tilfredsstiller du spesielle faglige krav kan du søke om unntak. Du må også levere opptaksprøve.",
+     "pris": "59 500 og 62 100 kr per semester",
+     "oppstart": "Høst 2025 og Høst 2026",
+     "url": "https://www.kristiania.no/studier/bachelor/musikkteater/",
+     "kilde_krav": "https://www.kristiania.no/studier/bachelor/musikkteater/"
+    },
+    {
+     "frist": "15. april (rullerende opptak etter fristen så lenge det er ledige plasser)",
+     "id": "okonomi-og-administrasjon",
+     "navn": "Økonomi og administrasjon",
+     "type": "Bachelor",
+     "studiepoeng": 180,
+     "sprak": null,
+     "steder": [
+      "Oslo"
+     ],
+     "minimum": null,
+     "minimum_merknad": "Kristiania oppgir ikke noe minimum antall poeng. Er det flere søkere enn plasser, rangeres søkerne etter konkurransepoeng.",
+     "prioritert": [],
+     "fagkrav": null,
+     "andre_krav": [],
+     "krav_tekst": "Du må innfri krav om generell studiekompetanse eller tilsvarende.",
+     "pris": "42 000 kr per semester",
+     "oppstart": "Høst 2026",
+     "url": "https://www.kristiania.no/studier/bachelor/okonomi-og-administrasjon/",
+     "kilde_krav": "https://www.kristiania.no/studier/bachelor/okonomi-og-administrasjon/"
+    },
+    {
+     "frist": "15. april (rullerende opptak etter fristen så lenge det er ledige plasser)",
+     "id": "osteopati",
+     "navn": "Osteopati",
+     "type": "Bachelor",
+     "studiepoeng": 180,
+     "sprak": null,
+     "steder": [
+      "Oslo"
+     ],
+     "minimum": null,
+     "minimum_merknad": "Kristiania oppgir ikke noe minimum antall poeng. Er det flere søkere enn plasser, rangeres søkerne etter konkurransepoeng.",
+     "prioritert": [],
+     "fagkrav": null,
+     "andre_krav": [
+      "Politiattest"
+     ],
+     "krav_tekst": "Du må innfri krav om generell studiekompetanse eller tilsvarende. Du må også levere politiattest.",
+     "pris": "60 300 kr per semester",
+     "oppstart": "Høst 2026",
+     "url": "https://www.kristiania.no/studier/bachelor/osteopati/",
+     "kilde_krav": "https://www.kristiania.no/studier/bachelor/osteopati/"
+    },
+    {
+     "frist": "15. april (rullerende opptak etter fristen så lenge det er ledige plasser)",
+     "id": "pedagogikk",
+     "navn": "Pedagogikk",
+     "type": "Bachelor",
+     "studiepoeng": 180,
+     "sprak": null,
+     "steder": [
+      "Oslo"
+     ],
+     "minimum": null,
+     "minimum_merknad": "Kristiania oppgir ikke noe minimum antall poeng. Er det flere søkere enn plasser, rangeres søkerne etter konkurransepoeng.",
+     "prioritert": [],
+     "fagkrav": null,
+     "andre_krav": [],
+     "krav_tekst": "Du må innfri krav om generell studiekompetanse eller tilsvarende.",
+     "pris": "50 200 kr per semester",
+     "oppstart": "Høst 2026",
+     "url": "https://www.kristiania.no/studier/bachelor/pedagogikk/",
+     "kilde_krav": "https://www.kristiania.no/studier/bachelor/pedagogikk/"
+    },
+    {
+     "frist": "15. april (rullerende opptak etter fristen så lenge det er ledige plasser)",
+     "id": "psykologi-og-psykisk-helse",
+     "navn": "Psykologi og psykisk helse",
+     "type": "Bachelor",
+     "studiepoeng": 180,
+     "sprak": null,
+     "steder": [
+      "Bergen",
+      "Oslo"
+     ],
+     "minimum": null,
+     "minimum_merknad": "Kristiania oppgir ikke noe minimum antall poeng. Er det flere søkere enn plasser, rangeres søkerne etter konkurransepoeng.",
+     "prioritert": [],
+     "fagkrav": null,
+     "andre_krav": [],
+     "krav_tekst": "Du må innfri krav om generell studiekompetanse eller tilsvarende.",
+     "pris": "50 200 kr per semester",
+     "oppstart": "Høst 2026",
+     "url": "https://www.kristiania.no/studier/bachelor/psykologi-og-psykisk-helse/",
+     "kilde_krav": "https://www.kristiania.no/studier/bachelor/psykologi-og-psykisk-helse/"
+    },
+    {
+     "frist": "15. april (rullerende opptak etter fristen så lenge det er ledige plasser)",
+     "id": "rettsvitenskap",
+     "navn": "Rettsvitenskap",
+     "type": "Bachelor",
+     "studiepoeng": 180,
+     "sprak": null,
+     "steder": [
+      "Bergen",
+      "Oslo"
+     ],
+     "minimum": null,
+     "minimum_merknad": "Kristiania oppgir ikke noe minimum antall poeng. Er det flere søkere enn plasser, rangeres søkerne etter konkurransepoeng.",
+     "prioritert": [],
+     "fagkrav": null,
+     "andre_krav": [],
+     "krav_tekst": "Du må innfri krav om generell studiekompetanse eller tilsvarende.",
+     "pris": "50 200 kr per semester",
+     "oppstart": "Høst 2026",
+     "url": "https://www.kristiania.no/studier/bachelor/rettsvitenskap/",
+     "kilde_krav": "https://www.kristiania.no/studier/bachelor/rettsvitenskap/"
+    },
+    {
+     "frist": "15. april (rullerende opptak etter fristen så lenge det er ledige plasser)",
+     "id": "sikkerhet-og-okonomi",
+     "navn": "Sikkerhet og økonomi",
+     "type": "Bachelor",
+     "studiepoeng": 180,
+     "sprak": null,
+     "steder": [
+      "Oslo"
+     ],
+     "minimum": null,
+     "minimum_merknad": "Kristiania oppgir ikke noe minimum antall poeng. Er det flere søkere enn plasser, rangeres søkerne etter konkurransepoeng.",
+     "prioritert": [],
+     "fagkrav": null,
+     "andre_krav": [],
+     "krav_tekst": "Du må innfri krav om generell studiekompetanse eller tilsvarende.",
+     "pris": "42 000 kr per semester",
+     "oppstart": "Høst 2026",
+     "url": "https://www.kristiania.no/studier/bachelor/sikkerhet-og-okonomi/",
+     "kilde_krav": "https://www.kristiania.no/studier/bachelor/sikkerhet-og-okonomi/"
+    },
+    {
+     "frist": "15. februar (opptaksprøven må leveres innen fristen)",
+     "id": "skuespill",
+     "navn": "Skuespill",
+     "type": "Bachelor",
+     "studiepoeng": 180,
+     "sprak": null,
+     "steder": [
+      "Oslo"
+     ],
+     "minimum": null,
+     "minimum_merknad": "Kristiania oppgir ikke noe minimum antall poeng. Er det flere søkere enn plasser, rangeres søkerne etter konkurransepoeng.",
+     "prioritert": [],
+     "fagkrav": null,
+     "andre_krav": [
+      "Opptaksprøve"
+     ],
+     "krav_tekst": "På dette studiet må du innfri krav om generell studiekompetanse. Tilfredsstiller du spesielle faglige krav kan du søke om unntak. Du må også levere opptaksprøve.",
+     "pris": "59 500 kr per semester",
+     "oppstart": "Høst 2025",
+     "url": "https://www.kristiania.no/studier/bachelor/skuespill/",
+     "kilde_krav": "https://www.kristiania.no/studier/bachelor/skuespill/"
+    },
+    {
+     "frist": "15. april (rullerende opptak etter fristen så lenge det er ledige plasser)",
+     "id": "sport-management",
+     "navn": "Sport Management",
+     "type": "Bachelor",
+     "studiepoeng": 180,
+     "sprak": null,
+     "steder": [
+      "Oslo"
+     ],
+     "minimum": null,
+     "minimum_merknad": "Kristiania oppgir ikke noe minimum antall poeng. Er det flere søkere enn plasser, rangeres søkerne etter konkurransepoeng.",
+     "prioritert": [],
+     "fagkrav": null,
+     "andre_krav": [
+      "Politiattest"
+     ],
+     "krav_tekst": "Du må innfri krav om generell studiekompetanse eller tilsvarende. Du må også levere politiattest.",
+     "pris": "50 200 kr per semester",
+     "oppstart": "Høst 2026",
+     "url": "https://www.kristiania.no/studier/bachelor/sport-management/",
+     "kilde_krav": "https://www.kristiania.no/studier/bachelor/sport-management/"
+    },
+    {
+     "frist": "15. april (rullerende opptak etter fristen så lenge det er ledige plasser)",
+     "id": "tekst-og-skribent",
+     "navn": "Tekst og skribent",
+     "type": "Bachelor",
+     "studiepoeng": 180,
+     "sprak": null,
+     "steder": [
+      "Oslo"
+     ],
+     "minimum": null,
+     "minimum_merknad": "Kristiania oppgir ikke noe minimum antall poeng. Er det flere søkere enn plasser, rangeres søkerne etter konkurransepoeng.",
+     "prioritert": [],
+     "fagkrav": null,
+     "andre_krav": [
+      "Opptaksprøve"
+     ],
+     "krav_tekst": "På dette studiet må du innfri krav om generell studiekompetanse eller tilsvarende. Du må også levere opptaksprøve. Les mer om opptaksprøvene her.",
+     "pris": "62 100 kr per semester",
+     "oppstart": "Høst 2026",
+     "url": "https://www.kristiania.no/studier/bachelor/tekst-og-skribent/",
+     "kilde_krav": "https://www.kristiania.no/studier/bachelor/tekst-og-skribent/"
+    }
+   ]
+  },
+  {
+   "id": "noroff",
+   "navn": "Noroff høyskole",
+   "kort": "Noroff",
+   "nettside": "https://www.noroff.no/",
+   "gjelder": "Studiestart 9. august 2027",
+   "tittel_ar": "2027",
+   "gjelder_merknad": null,
+   "opptak": "Løpende opptak: jo tidligere du søker, desto tidligere kan du sikre deg plass.",
+   "poengregel": "Noroff har ikke minimumskrav i poeng for høyskolestudiene.",
+   "garanti": "Det er ingen poenggrense, men plassene fylles fortløpende.",
+   "kilder": [
+    {
+     "tittel": "Noroff – Opptakskrav",
+     "url": "https://www.noroff.no/sok/opptakskrav",
+     "oppdatert": null
+    }
+   ],
+   "utelatt": "Fagskolestudier, halvårsstudier og enkeltemner er ikke med.",
+   "studier": [
+    {
+     "id": "applied-data-science",
+     "navn": "Applied Data Science",
+     "type": "Bachelor",
+     "studiepoeng": 180,
+     "sprak": "Engelsk",
+     "steder": [
+      "Nettstudier",
+      "Online+ Oslo/Bergen"
+     ],
+     "minimum": null,
+     "minimum_merknad": "Noroff oppgir ikke noe minimum antall poeng. Du må ha generell studiekompetanse.",
+     "prioritert": [],
+     "fagkrav": "Matematikk R1, eller S1 + S2",
+     "andre_krav": [
+      "Dokumentere tilstrekkelige ferdigheter i engelsk"
+     ],
+     "pris": "50 000 kr per semester (nettstudier), 55 000 kr per semester (Online+ Oslo/Bergen)",
+     "oppstart": "9. august 2027",
+     "frist": "Løpende opptak",
+     "url": "https://www.noroff.no/studier/hoyskole/applied-data-science",
+     "kilde_krav": "https://www.noroff.no/sok/opptakskrav"
+    },
+    {
+     "id": "cyber-security",
+     "navn": "Cyber Security",
+     "type": "Bachelor",
+     "studiepoeng": 180,
+     "sprak": "Engelsk",
+     "steder": [
+      "Nettstudier",
+      "Online+ Oslo/Bergen"
+     ],
+     "minimum": null,
+     "minimum_merknad": "Noroff oppgir ikke noe minimum antall poeng. Du må ha generell studiekompetanse.",
+     "prioritert": [],
+     "fagkrav": "Matematikk R1, eller S1 + S2",
+     "andre_krav": [
+      "Dokumentere tilstrekkelige ferdigheter i engelsk"
+     ],
+     "pris": "50 000 kr per semester (nettstudier), 55 000 kr per semester (Online+ Oslo/Bergen)",
+     "oppstart": "9. august 2027",
+     "frist": "Løpende opptak",
+     "url": "https://www.noroff.no/studier/hoyskole/cyber-security",
+     "kilde_krav": "https://www.noroff.no/sok/opptakskrav"
+    },
+    {
+     "id": "digital-forensics-incident-response",
+     "navn": "Digital Forensics and Incident Response",
+     "type": "Bachelor",
+     "studiepoeng": 180,
+     "sprak": "Engelsk",
+     "steder": [
+      "Nettstudier",
+      "Online+ Oslo/Bergen"
+     ],
+     "minimum": null,
+     "minimum_merknad": "Noroff oppgir ikke noe minimum antall poeng. Du må ha generell studiekompetanse.",
+     "prioritert": [],
+     "fagkrav": "Matematikk R1, eller S1 + S2",
+     "andre_krav": [
+      "Dokumentere tilstrekkelige ferdigheter i engelsk"
+     ],
+     "pris": "50 000 kr per semester (nettstudier), 55 000 kr per semester (Online+ Oslo/Bergen)",
+     "oppstart": "9. august 2027",
+     "frist": "Løpende opptak",
+     "url": "https://www.noroff.no/studier/hoyskole/digital-forensics-incident-response",
+     "kilde_krav": "https://www.noroff.no/sok/opptakskrav"
+    },
+    {
+     "id": "digital-assurance-security-management",
+     "navn": "Digital Assurance and Security Management",
+     "type": "Bachelor",
+     "studiepoeng": 180,
+     "sprak": "Engelsk",
+     "steder": [
+      "Nettstudier",
+      "Online+ Oslo/Bergen"
+     ],
+     "minimum": null,
+     "minimum_merknad": "Noroff oppgir ikke noe minimum antall poeng. Du må ha generell studiekompetanse.",
+     "prioritert": [],
+     "fagkrav": null,
+     "andre_krav": [
+      "Dokumentere tilstrekkelige ferdigheter i engelsk"
+     ],
+     "pris": "50 000 kr per semester (nettstudier), 55 000 kr per semester (Online+ Oslo/Bergen)",
+     "oppstart": "9. august 2027",
+     "frist": "Løpende opptak",
+     "url": "https://www.noroff.no/studier/hoyskole/digital-assurance-security-management",
+     "kilde_krav": "https://www.noroff.no/sok/opptakskrav"
+    },
+    {
+     "id": "interaktive-medier-animasjon",
+     "navn": "Interactive Media – Animation",
+     "type": "Bachelor",
+     "studiepoeng": 180,
+     "sprak": "Engelsk",
+     "steder": [
+      "Nettstudier",
+      "Online+ Oslo/Bergen"
+     ],
+     "minimum": null,
+     "minimum_merknad": "Noroff oppgir ikke noe minimum antall poeng. Du må ha generell studiekompetanse.",
+     "prioritert": [],
+     "fagkrav": null,
+     "andre_krav": [
+      "Dokumentere tilstrekkelige ferdigheter i engelsk"
+     ],
+     "pris": "50 000 kr per semester (nettstudier), 55 000 kr per semester (Online+ Oslo/Bergen)",
+     "oppstart": "9. august 2027",
+     "frist": "Løpende opptak",
+     "url": "https://www.noroff.no/studier/hoyskole/interaktive-medier-animasjon",
+     "kilde_krav": "https://www.noroff.no/sok/opptakskrav"
+    },
+    {
+     "id": "interaktive-medier-spill",
+     "navn": "Interactive Media – Games",
+     "type": "Bachelor",
+     "studiepoeng": 180,
+     "sprak": "Engelsk",
+     "steder": [
+      "Nettstudier",
+      "Online+ Oslo/Bergen"
+     ],
+     "minimum": null,
+     "minimum_merknad": "Noroff oppgir ikke noe minimum antall poeng. Du må ha generell studiekompetanse.",
+     "prioritert": [],
+     "fagkrav": null,
+     "andre_krav": [
+      "Dokumentere tilstrekkelige ferdigheter i engelsk"
+     ],
+     "pris": "50 000 kr per semester (nettstudier), 55 000 kr per semester (Online+ Oslo/Bergen)",
+     "oppstart": "9. august 2027",
+     "frist": "Løpende opptak",
+     "url": "https://www.noroff.no/studier/hoyskole/interaktive-medier-spill",
+     "kilde_krav": "https://www.noroff.no/sok/opptakskrav"
+    },
+    {
+     "id": "assurance-cybersecurity-management",
+     "navn": "Assurance in Cybersecurity Management (årsstudium)",
+     "type": "Årsstudium",
+     "studiepoeng": 60,
+     "sprak": "Engelsk",
+     "steder": [
+      "Nettstudier",
+      "Online+ Oslo/Bergen"
+     ],
+     "minimum": null,
+     "minimum_merknad": "Noroff oppgir ikke noe minimum antall poeng. Du må ha generell studiekompetanse.",
+     "prioritert": [],
+     "fagkrav": null,
+     "andre_krav": [
+      "Dokumentere tilstrekkelige ferdigheter i engelsk"
+     ],
+     "pris": "50 000 kr per semester (nettstudier), 55 000 kr per semester (Online+ Oslo/Bergen)",
+     "oppstart": "9. august 2027",
+     "frist": "Løpende opptak",
+     "url": "https://www.noroff.no/studier/hoyskole/assurance-cybersecurity-management",
+     "kilde_krav": "https://www.noroff.no/sok/opptakskrav"
+    },
+    {
+     "id": "cybercrime-investigation-response",
+     "navn": "Cybercrime Investigation and Response (årsstudium)",
+     "type": "Årsstudium",
+     "studiepoeng": 60,
+     "sprak": "Engelsk",
+     "steder": [
+      "Nettstudier",
+      "Online+ Oslo/Bergen"
+     ],
+     "minimum": null,
+     "minimum_merknad": "Noroff oppgir ikke noe minimum antall poeng. Du må ha generell studiekompetanse.",
+     "prioritert": [],
+     "fagkrav": "Matematikk R1, eller S1 + S2",
+     "andre_krav": [
+      "Dokumentere tilstrekkelige ferdigheter i engelsk"
+     ],
+     "pris": "50 000 kr per semester (nettstudier), 55 000 kr per semester (Online+ Oslo/Bergen)",
+     "oppstart": "9. august 2027",
+     "frist": "Løpende opptak",
+     "url": "https://www.noroff.no/studier/hoyskole/cybercrime-investigation-response",
+     "kilde_krav": "https://www.noroff.no/sok/opptakskrav"
+    }
+   ]
+  }
+ ]
+}

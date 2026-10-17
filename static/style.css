@@ -170,3 +170,21 @@ td.opp, td.ned { font-weight: 600; }
 .serie.ordinar::before { background: var(--oransje); }
 
 [id] { scroll-margin-top: 72px; }
+
+/* Private høyskoler */
+.merke { display: inline-block; vertical-align: middle; font-size: .75rem; font-weight: 700; letter-spacing: .02em; text-transform: uppercase;
+  background: var(--oransje); color: #fff; border-radius: 999px; padding: .15rem .6rem; margin-left: .3rem; }
+h1 .merke { font-size: .8rem; position: relative; top: -.2em; }
+:root[data-theme="dark"] .merke { color: #0f1115; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .merke { color: #0f1115; } }
+.advarsel { border-left: 4px solid var(--oransje); padding: .4rem .8rem; background: var(--flate); border-radius: 0 8px 8px 0; }
+.kilde { color: var(--dempet); }
+table.fakta th { width: 34%; text-transform: none; letter-spacing: 0; font-size: .9rem; color: var(--dempet); font-weight: 600; }
+#privat-liste details { border-bottom: 1px solid var(--kant); padding: .6rem 0; }
+#privat-liste summary { cursor: pointer; font-weight: 600; }
+#p-ut ul { list-style: none; padding: 0; }
+#p-ut li { padding: .55rem .8rem; border-radius: 8px; margin: .4rem 0; background: var(--aksent-myk); }
+#p-ut li.ok { background: var(--ok-myk); color: var(--ok); }
+#p-ut li.nei { background: var(--nei-myk); color: var(--nei); }
+
+.studieliste .via.ukjent { background: var(--aksent-myk); color: var(--dempet); }

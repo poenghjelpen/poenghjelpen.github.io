@@ -10,6 +10,7 @@ Nettsiden: <https://poenghjelpen.github.io/>
 |---|---|
 | `build.py` | Lager hele nettsiden. **Nettadressen står i variabelen `SITE_URL` øverst.** |
 | `fetch_data.py` | Laster ned poenggrenser for alle år fra Samordna opptak til `data/poenggrenser.json`, og kobler sammen studier som har byttet studiekode. |
+| `data/private.json` | Opptakskrav for private høyskoler med eget opptak (BI, Kristiania, Noroff). **Skrives for hånd** fra skolenes nettsider – se under. |
 | `data/poenggrenser.json` | Poenggrensene for 2015–2026 (hovedopptak og suppleringsopptak, 1369 studier i 2026 med historikk). |
 | `static/` | Utseende (`style.css`), kalkulatorens regler (`poeng.js`) og knappene/søket (`app.js`). |
 | `.github/workflows/pages.yml` | Oppskrift som får GitHub til å bygge og publisere siden automatisk. |
@@ -114,6 +115,16 @@ Samordna opptak publiserer nye poenggrenser i juli. Skriptet henter alle år på
    ```
 5. Kolonnene må hete `Kvote`, `Lærested`, `Opptaksrunde`, `Studiekode`, `Studienavn`, `Studiested`,
    `Utdanningsområde og -type`, `År` og `Poenggrense`. Hvis ikke, sier skriptet fra.
+
+## Oppdatere private høyskoler
+
+Kravene til BI, Kristiania og Noroff hentes ikke automatisk. Sjekk dem hvert år (gjerne i januar–mars, når skolene publiserer krav for høsten):
+
+- BI: <https://www.bi.no/studier-og-kurs/soknad-og-opptak/opptakskrav/bachelorstudier/>
+- Kristiania: <https://www.kristiania.no/studere-hos-oss/opptaksinformasjon/> og programsidene
+- Noroff: <https://www.noroff.no/sok/opptakskrav>
+
+Endre tallene i `data/private.json`, og sett `"hentet"` øverst til datoen du sjekket. Står et krav ikke oppgitt, la `"minimum"` være `null`.
 
 ## Se siden på din egen maskin (valgfritt)
 

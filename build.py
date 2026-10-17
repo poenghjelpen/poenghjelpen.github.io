@@ -376,6 +376,7 @@ def side(path, tittel, beskrivelse, innhold, ekstra_head="", skript=(), i_sitema
 <a href="{url('')}">Forside</a>
 <a href="{url('alle-studier/')}">Alle studier</a>
 <a href="{url('endringer/')}">Størst endring</a>
+<a href="{url('privat/')}">Private høyskoler</a>
 <a href="{url('om/')}">Om Poenghjelpen</a>
 <a href="{url('personvern/')}">Personvern</a>
 </nav>
@@ -868,6 +869,11 @@ def forside(studier, per_lared, per_fag, ar):
 <button id="treff-mer" class="knapp sekundar" type="button" hidden>Vis flere</button>
 <h3>Nesten der – under 3 poeng unna</h3>
 <ul id="nesten-liste" class="studieliste"></ul>
+<div id="privat-boks" hidden>
+<h3>Private høyskoler <span class="merke">Eget opptak</span></h3>
+<p class="small muted">Dette er minimumskrav fra skolenes egne nettsider, ikke poenggrenser. Å oppfylle kravet gir ikke garantert plass. Du søker direkte til skolen. <a href="{url('privat/')}">Les mer</a>.</p>
+<div id="privat-liste"></div>
+</div>
 </div>
 </section>
 
@@ -906,6 +912,11 @@ def forside(studier, per_lared, per_fag, ar):
 
 <section id="laresteder"><h2>Læresteder</h2><ul class="lenkenett">{lared_li}</ul></section>
 <section id="fagomrader"><h2>Fagområder</h2>{fag_html}</section>
+
+<section id="private"><h2>Private høyskoler med eget opptak</h2>
+<p>BI, Høyskolen Kristiania og Noroff har eget opptak utenom Samordna opptak. Der er det minimumskrav – ikke poenggrenser.</p>
+<ul class="lenkenett"><li><a href="{url('privat/bi/')}">Opptakskrav BI</a></li><li><a href="{url('privat/kristiania/')}">Opptakskrav Høyskolen Kristiania</a></li>
+<li><a href="{url('privat/noroff/')}">Opptakskrav Noroff</a></li><li><a href="{url('privat/')}">Om private høyskoler</a></li></ul></section>
 """
     side("", f"Poenggrenser {FORSTE_AR}–{ar} og poengkalkulator – {SITE_NAVN}",
          f"Se poenggrensene fra Samordna opptak {FORSTE_AR}–{ar} for {len(studier)} studier, hvordan de har endret seg, regn ut poengene dine og finn ut hvilke studier du kommer inn på.",
@@ -951,6 +962,9 @@ Se kilden selv på <a href="https://www.samordnaopptak.no/universitet-og-hogskol
 <p>Studiene kobles sammen fra år til år via studiekoden. Samordna opptak bruker dagens navn på studiet og lærestedet for alle år, så et studium som har byttet navn, vises med det nye navnet hele veien.
 Noen studier har fått ny studiekode, ofte etter at læresteder ble slått sammen. Når en gammel kode har samme navn, lærested og studiested som en ny kode, og årene ikke overlapper, kobler vi dem sammen ({sum(len(s.get('tidligere_koder', [])) for s in meta['studier'])} slike koblinger).
 Er vi usikre, lar vi være å koble. Studier som ikke ble tilbudt i {ar} ({len(meta.get('nedlagte', []))} studiekoder), har ikke egne sider.</p>
+<h2>Private høyskoler</h2>
+<p>BI, Høyskolen Kristiania og Noroff har eget opptak utenom Samordna opptak. For dem viser vi <b>minimumskrav</b> fra skolenes egne nettsider, ikke poenggrenser.
+Et minimumskrav gir ikke garantert plass. Står et krav ikke oppgitt hos skolen, skriver vi det. Se <a href="{url('privat/')}">private høyskoler</a>.</p>
 <h2>Slik leser du tallene</h2>
 <ul>
 <li><b>Poenggrensen</b> er poengsummen til den siste søkeren som fikk tilbud om plass.</li>
@@ -990,6 +1004,208 @@ def side_404():
     side("404.html", f"Fant ikke siden – {SITE_NAVN}", "Siden finnes ikke.", innhold, ekstra_head='<meta name="robots" content="noindex">', i_sitemap=False)
 
 
+# ---------------------------------------------------------------- private høyskoler (eget opptak)
+def dato_tekst(iso):
+    maaneder = ["januar", "februar", "mars", "april", "mai", "juni", "juli", "august", "september", "oktober", "november", "desember"]
+    a, m, d = (int(x) for x in iso.split("-"))
+    return f"{d}. {maaneder[m - 1]} {a}"
+
+
+def poengtall(x):
+    """Minimumskrav skrives som skolene gjør: 44 poeng, ikke 44,0."""
+    return str(int(x)) if float(x).is_integer() else tall(x)
+
+
+def priv_url(skole, studie=None):
+    return f"privat/{skole['id']}/" + (f"{slug(studie['navn'])}/" if studie else "")
+
+
+def minimum_kort(st):
+    """Kort tekst om minimumskravet, f.eks. «35 poeng» eller «Ingen poengkrav»."""
+    m = st["minimum"]
+    if m is None:
+        return "Ikke oppgitt" if st["skole"]["id"] == "bi" else "Ingen poengkrav"
+    if "alle" in m:
+        return f"{poengtall(m['alle'])} poeng"
+    return f"{poengtall(m['forste'])} / {poengtall(m['ordinar'])} poeng"
+
+
+def krav_liste(st):
+    deler = []
+    if st["fagkrav"]:
+        deler.append(st["fagkrav"])
+    deler += st["andre_krav"]
+    return deler
+
+
+def kilde_html(skole, st=None, hentet=""):
+    kravsider = {x["kilde_krav"] for x in skole["studier"]}
+    kilder = [k for k in skole["kilder"] if not st or k["url"] not in kravsider or k["url"] == st["kilde_krav"]]
+    lenker = [f'<a href="{e(k["url"])}" rel="noopener">{e(k["tittel"])}</a>' + (f' (sist oppdatert {e(k["oppdatert"])})' if k["oppdatert"] else "")
+              for k in kilder]
+    if st:
+        lenker.insert(0, f'<a href="{e(st["url"])}" rel="noopener">Studiets side hos {e(skole["kort"])}</a>')
+    return (f'<p class="kilde small">Kilde: {"; ".join(lenker)}. Hentet {dato_tekst(hentet)}. '
+            f'Kravene kan endre seg – sjekk alltid hos {e(skole["kort"])} før du søker.</p>')
+
+
+EGET_OPPTAK = '<span class="merke">Eget opptak</span>'
+
+
+def privat_studieside(skole, st, hentet):
+    m = st["minimum"]
+    navn, kort = st["navn"], skole["kort"]
+    steder = ", ".join(st["steder"])
+    tittel = f"Opptakskrav {navn} – {kort} {skole['tittel_ar']}"
+    if m and "forste" in m:
+        min_desc = f"minimum {poengtall(m['forste'])} skolepoeng med førstegangsvitnemål og {poengtall(m['ordinar'])} konkurransepoeng med ordinært vitnemål"
+    elif m:
+        min_desc = f"minimum {poengtall(m['alle'])} poeng"
+    else:
+        min_desc = "ingen oppgitt poenggrense" if skole["id"] != "bi" else "poengkravet er ikke oppgitt"
+    beskrivelse = (f"Opptakskrav for {navn} ved {skole['navn']} ({steder}): {min_desc}"
+                   + (f", {st['fagkrav']}" if st["fagkrav"] else "") + f". Eget opptak, ikke Samordna opptak. Hentet {dato_tekst(hentet)}.")
+
+    def boks(etikett, verdi, under, ord_=False):
+        return f'<div class="tall"><div class="etikett">{etikett}</div><div class="verdi{" ord" if ord_ else ""}">{verdi}</div><div class="under">{under}</div></div>'
+
+    if m and "forste" in m:
+        bokser = (boks("Minimumskrav, førstegangsvitnemål", poengtall(m["forste"]), "skolepoeng")
+                  + boks("Minimumskrav, ordinært vitnemål", poengtall(m["ordinar"]), "konkurransepoeng"))
+    elif m:
+        bokser = boks("Minimumskrav", poengtall(m["alle"]), "skolepoeng med førstegangsvitnemål, ellers konkurransepoeng")
+    else:
+        bokser = boks("Minimumskrav", "Ikke oppgitt" if skole["id"] == "bi" else "Ingen poengkrav", "i poeng", ord_=True)
+    bokser += boks("Fagkrav", e(st["fagkrav"]) if st["fagkrav"] else "Ingen", "i tillegg til generell studiekompetanse", ord_=True)
+
+    fakta = [("Skole", f'<a href="{url(priv_url(skole))}">{e(skole["navn"])}</a>'), ("Studiested", e(steder)),
+             ("Type", f'{e(st["type"])}, {st["studiepoeng"]} studiepoeng'), ("Oppstart", e(st["oppstart"]))]
+    if st["sprak"]:
+        fakta.append(("Undervisningsspråk", e(st["sprak"])))
+    fakta.append(("Studieavgift", e(st["pris"])))
+    fakta.append(("Søknadsfrist", e(st["frist"])))
+    fakta.append(("Opptak", e(skole["opptak"])))
+    if st["andre_krav"]:
+        fakta.append(("Andre krav", e("; ".join(st["andre_krav"]))))
+    if m:
+        fakta.append(("Kravet slik skolen skriver det", f"«{e(m['tekst'])}»"))
+    if st["prioritert"]:
+        fakta.append(("Prioriterte grenser", e(", ".join(f"{p['sted']} {poengtall(p['poeng'])} poeng" for p in st["prioritert"]))))
+    fakta_html = "".join(f"<tr><th scope=\"row\">{k}</th><td>{v}</td></tr>" for k, v in fakta)
+
+    advarsler = []
+    if st["minimum_merknad"]:
+        advarsler.append(e(st["minimum_merknad"]))
+    if not any(str(a) in st["oppstart"] for a in (SISTE_AR, SISTE_AR + 1)):
+        advarsler.append(f"Skolens side oppgir oppstart {e(st['oppstart'].lower())}. Sjekk med {e(kort)} om studiet tar opp nye studenter.")
+    if skole.get("gjelder_merknad"):
+        advarsler.append(e(skole["gjelder_merknad"]))
+
+    sjekk = f"""<section class="kort" aria-labelledby="sjekk-h">
+<h2 id="sjekk-h">Oppfyller du kravet?</h2>
+<p class="muted">Skriv inn poengene dine, eller regn dem ut med <a href="{url('')}#kalkulator">poengkalkulatoren</a> først – da fylles de inn automatisk.</p>
+<form id="sjekk-privat" class="sjekk-form" data-min='{e(json.dumps(m or {}))}' data-fag="{1 if st['fagkrav'] else 0}" data-ingen="{1 if (m is None and skole['id'] != 'bi') else 0}">
+<label>Skolepoeng<input id="p-skole" inputmode="decimal" placeholder="f.eks. 42,5"></label>
+<label>Konkurransepoeng<input id="p-konk" inputmode="decimal" placeholder="f.eks. 46,5"></label>
+<div><label class="chk"><input type="checkbox" id="p-fgv" checked> Jeg har førstegangsvitnemål</label>
+{'<label class="chk"><input type="checkbox" id="p-matte"> Jeg har R1 eller S1 + S2</label>' if st['fagkrav'] else ''}</div>
+<button class="knapp" type="submit">Sjekk</button>
+</form>
+<div id="p-ut" aria-live="polite"></div>
+</section>"""
+
+    sporsmal = [
+        ("Er minimumskravet det samme som en poenggrense?",
+         "Nei. En poenggrense er poengene til den siste som kom inn. Et minimumskrav er det du minst må ha for å bli vurdert. "
+         "Du er ikke garantert plass selv om du oppfyller kravet, fordi det avhenger av antall søkere og ledige plasser."),
+        (f"Søker jeg via Samordna opptak?",
+         f"Nei. {skole['navn']} har eget opptak, så du søker direkte på skolens nettside. Du kan søke både der og i Samordna opptak samme år."),
+        ("Hva koster studiet?", f"Ifølge {kort} er studieavgiften {st['pris']}."),
+    ]
+    faq, faq_ld = faq_html(sporsmal)
+    andre = [x for x in skole["studier"] if x is not st]
+    andre_li = "".join(f'<li><a href="{url(priv_url(skole, x))}">{e(x["navn"])}</a><span class="meta">{e(", ".join(x["steder"]))}</span>'
+                       f'<span class="grenser">Minimumskrav: {minimum_kort(x)}</span></li>' for x in andre[:10])
+    innhold = f"""{sti(("Private høyskoler", "privat/"), (kort, priv_url(skole)), (navn, None))}
+<h1>Opptakskrav {e(navn)} {EGET_OPPTAK}</h1>
+<p class="muted">{e(skole['navn'])} · {e(steder)} · {e(st['type'])}</p>
+<div class="merknad"><b>{"Dette er et minimumskrav, ikke en poenggrense." if m else ("Studiet har ingen poenggrense og ikke noe oppgitt poengkrav." if skole["id"] != "bi" else "Poengkravet er ikke oppgitt – og dette er uansett ikke en poenggrense.")}</b> {e(skole['garanti'])}</div>
+<div class="tall-grid">{bokser}</div>
+{"".join(f'<p class="advarsel small">{a}</p>' for a in advarsler)}
+{sjekk}
+<section><h2>Fakta om studiet</h2><div class="tabell-wrap"><table class="data fakta"><tbody>{fakta_html}</tbody></table></div>
+<p class="small">{e(skole['poengregel'])}</p>
+{kilde_html(skole, st, hentet)}</section>
+{faq}
+<section><h2>Andre studier ved {e(kort)}</h2><ul class="studieliste">{andre_li}</ul>
+<p><a href="{url(priv_url(skole))}">Alle opptakskrav ved {e(skole['navn'])}</a> · <a href="{url('privat/')}">Alle private høyskoler</a></p></section>"""
+    side(priv_url(skole, st), tittel, beskrivelse, innhold, ekstra_head=faq_ld)
+
+
+def privat_skoleside(skole, hentet):
+    kort = skole["kort"]
+    rader = "".join(
+        f'<tr><td><a href="{url(priv_url(skole, st))}">{e(st["navn"])}</a><br><span class="small muted">{e(st["type"])}, {st["studiepoeng"]} stp</span></td>'
+        f'<td>{e(", ".join(st["steder"]))}</td><td class="n">{minimum_kort(st)}</td><td>{e("; ".join(krav_liste(st))) or "–"}</td></tr>'
+        for st in skole["studier"])
+    med_min = [st for st in skole["studier"] if st["minimum"]]
+    intro = f"{e(skole['navn'])} har eget opptak, så du søker direkte til skolen og ikke gjennom Samordna opptak. Her er opptakskravene for {len(skole['studier'])} bachelor- og årsstudier."
+    if med_min:
+        laveste = min(st["minimum"].get("alle", st["minimum"].get("forste", 99)) for st in med_min)
+        intro += f" {len(med_min)} av studiene har et oppgitt minimumskrav i poeng, fra {poengtall(laveste)} poeng og oppover."
+    else:
+        intro += " Skolen oppgir ingen minimumskrav i poeng – du trenger generell studiekompetanse, og noen studier har fagkrav eller opptaksprøve."
+    med_fag = sum(1 for st in skole["studier"] if st["fagkrav"])
+    if med_fag:
+        intro += f" {med_fag} studier krever matematikk R1 eller S1 + S2."
+    innhold = f"""{sti(("Private høyskoler", "privat/"), (kort, None))}
+<h1>Opptakskrav {e(kort)} {e(skole['tittel_ar'])} {EGET_OPPTAK}</h1>
+<p>{intro}</p>
+<div class="merknad"><b>Minimumskrav er ikke poenggrenser.</b> {e(skole['garanti'])}</div>
+<div class="regler"><div class="kort"><h3>Gjelder</h3><p>{e(skole['gjelder'])}.{(' ' + e(skole['gjelder_merknad'])) if skole['gjelder_merknad'] else ''}</p></div>
+<div class="kort"><h3>Opptak og frister</h3><p>{e(skole['opptak'])}</p></div>
+<div class="kort"><h3>Poeng</h3><p>{e(skole['poengregel'])}</p></div></div>
+<h2>Alle studier</h2>
+<div class="tabell-wrap"><table class="data"><thead><tr><th>Studium</th><th>Sted</th><th class="n">Minimumskrav</th><th>Andre krav</th></tr></thead><tbody>{rader}</tbody></table></div>
+<p class="small muted">Ikke med: {e(skole['utelatt'])}</p>
+{kilde_html(skole, hentet=hentet)}"""
+    side(priv_url(skole), f"Opptakskrav {kort} {skole['tittel_ar']} – minimumskrav for alle bachelorstudier",
+         f"Se opptakskravene for {len(skole['studier'])} studier ved {skole['navn']}: minimumskrav i poeng, fagkrav og frister. Hentet {dato_tekst(hentet)}.",
+         innhold)
+
+
+def privat_samleside(priv):
+    kort = []
+    for sk in priv["skoler"]:
+        med_min = sum(1 for st in sk["studier"] if st["minimum"])
+        kort.append(f'<div class="kort"><h3><a href="{url(priv_url(sk))}">{e(sk["navn"])}</a></h3>'
+                    f'<p>{len(sk["studier"])} studier · {e(sk["gjelder"])}</p>'
+                    f'<p class="small">{e(sk["poengregel"])}</p><p class="small muted">{e(sk["opptak"])}</p>'
+                    f'<p><a href="{url(priv_url(sk))}">Se opptakskrav {e(sk["kort"])} →</a></p></div>')
+    innhold = f"""{sti(("Private høyskoler", None))}
+<h1>Private høyskoler med eget opptak</h1>
+<p>Noen private høyskoler tar opp studenter selv, utenom Samordna opptak. Der finnes det ingen poenggrenser slik som i Samordna opptak, men skolene kan ha <b>minimumskrav</b>:
+det laveste antallet poeng du må ha for å bli vurdert. Du søker direkte på skolens nettside, og du kan søke både der og i Samordna opptak samme år.</p>
+<div class="merknad"><b>Et minimumskrav er ikke en garanti.</b> Du kan oppfylle kravet og likevel ikke få plass hvis studiet blir fullt. Private høyskoler tar også studieavgift.</div>
+<div class="regler">{"".join(kort)}</div>
+<p class="small muted">Kravene er hentet fra skolenes egne nettsider {dato_tekst(priv['hentet'])}. Står et krav ikke oppgitt, skriver vi det. Vil du se hvilke du oppfyller? Bruk <a href="{url('')}#kalkulator">poengkalkulatoren</a>.</p>"""
+    side("privat/", f"Private høyskoler med eget opptak – opptakskrav BI, Kristiania og Noroff | {SITE_NAVN}",
+         "Opptakskrav for private høyskoler med eget opptak: minimumskrav i poeng, fagkrav og frister for BI, Høyskolen Kristiania og Noroff.",
+         innhold)
+
+
+def privat_indeks(priv):
+    """Kompakt liste for søk og kalkulator i nettleseren."""
+    ut = []
+    for sk in priv["skoler"]:
+        for st in sk["studier"]:
+            m = st["minimum"] or {}
+            ut.append({"s": sk["kort"], "n": st["navn"], "t": st["type"], "st": ", ".join(st["steder"]),
+                       "m": {k: v for k, v in m.items() if k != "tekst"}, "ingen": 1 if (not m and sk["id"] != "bi") else 0,
+                       "fag": 1 if st["fagkrav"] else 0, "a": st["andre_krav"], "u": priv_url(sk, st), "mk": minimum_kort(st)})
+    return ut
+
+
 # ---------------------------------------------------------------- hovedprogram
 def main():
     global FORSTE_AR, SISTE_AR
@@ -1018,6 +1234,15 @@ def main():
     for f, v in per_fag.items():
         fagside(f, v, alle_fag, ar)
     endringer_side(studier, ar)
+    priv = json.loads((ROOT / "data" / "private.json").read_text(encoding="utf-8"))
+    for sk in priv["skoler"]:
+        for st in sk["studier"]:
+            st["skole"] = sk
+        privat_skoleside(sk, priv["hentet"])
+        for st in sk["studier"]:
+            privat_studieside(sk, st, priv["hentet"])
+    privat_samleside(priv)
+    (OUT / "assets" / "private.json").write_text(json.dumps(privat_indeks(priv), ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
     om_side(meta, ar)
     personvern_side()
     side_404()
