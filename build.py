@@ -802,6 +802,9 @@ def main():
         encoding="utf-8")
     (OUT / "robots.txt").write_text(f"User-agent: *\nAllow: /\n\nSitemap: {SITE_URL}sitemap.xml\n", encoding="utf-8")
     (OUT / ".nojekyll").write_text("", encoding="utf-8")
+    # Bekreftelsesfil fra Google Search Console (f.eks. google1234abcd.html) kopieres med
+    for f in ROOT.glob("google*.html"):
+        shutil.copy(f, OUT / f.name)
     print(f"Ferdig! Laget {len(SIDER) + 1} sider i {OUT}/ for {SITE_URL}")
 
 
