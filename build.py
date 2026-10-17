@@ -29,6 +29,7 @@ if not BASE.endswith("/"):
     BASE += "/"
 I_DAG = date.today().isoformat()
 FORSTE_AR = SISTE_AR = None  # settes i main() ut fra dataene
+PRIVATE_SKOLER = []  # fylles i main() fra data/private.json
 
 LAERESTEDER = {
     "AHO": ("AHO", "Arkitektur- og designhøgskolen i Oslo"),
@@ -154,6 +155,11 @@ def har_tall(g):
     return g is not None and g > 0
 
 
+def rydd_navn(navn):
+    """Fjerner mellomrom før tegnsetting og doble mellomrom: «Psykologi , høst» -> «Psykologi, høst»."""
+    return re.sub(r"\s+([,.;:])", r"\1", re.sub(r"\s+", " ", navn)).strip()
+
+
 def url(path):
     return BASE + path
 
@@ -173,7 +179,7 @@ def last_data():
         s["hist"] = {int(a): v for a, v in s.get("historikk", {}).items()}
         s["saerskilt"] = s["studienavn"].endswith("*") or any(
             v is not None and v > 90 for h in s["hist"].values() for r in h.values() for v in r.values())
-        s["navn"] = s["studienavn"].rstrip("*").strip()
+        s["navn"] = rydd_navn(s["studienavn"].rstrip("*"))
         kort, langt = LAERESTEDER.get(s["laerested"], (s["laerested"], s["laerested"]))
         s["lkort"], s["llangt"] = kort, langt
         s["fagnavn"] = FAGOMRADER.get(s["fagomrade"], s["fagomrade"].capitalize())
@@ -364,6 +370,7 @@ def side(path, tittel, beskrivelse, innhold, ekstra_head="", skript=(), i_sitema
 <a href="{url('')}#kalkulator">Kalkulator</a>
 <a href="{url('alle-studier/')}">Alle studier</a>
 <a class="valgfri" href="{url('endringer/')}">Endringer</a>
+<a class="valgfri" href="{url('privat/')}">Private</a>
 <a class="valgfri" href="{url('om/')}">Om</a>
 <button id="tema" type="button" aria-label="Bytt mellom lys og mørk modus" title="Lys/mørk modus">◐</button>
 </nav>
@@ -785,9 +792,10 @@ def endring_li(studier, ar, opp):
 
 def forside(studier, per_lared, per_fag, ar):
     neste = ar + 1
-    lared_li = "".join(
-        f'<li><a href="{url(lared_url(k))}">{e(LAERESTEDER.get(k, (k, k))[1])}</a> <span class="ant">({len(v)})</span></li>'
-        for k, v in sorted(per_lared.items(), key=lambda kv: LAERESTEDER.get(kv[0], (kv[0], kv[0]))[1]))
+    lared = [(LAERESTEDER.get(k, (k, k))[1], url(lared_url(k)), f"({len(v)})") for k, v in per_lared.items()]
+    lared += [(sk["navn"], url(f"privat/{sk['id']}/"), "– eget opptak") for sk in PRIVATE_SKOLER]
+    lared_li = "".join(f'<li><a href="{lenke}">{e(navn)}</a> <span class="ant">{ant}</span></li>'
+                       for navn, lenke, ant in sorted(lared, key=lambda t: t[0]))
     grupper = defaultdict(list)
     for f in per_fag:
         grupper[FAGGRUPPER.get(f.split(" - ")[0], "Andre fagområder")].append(f)
@@ -812,10 +820,12 @@ def forside(studier, per_lared, per_fag, ar):
 
     innhold = f"""<section class="helt">
 <h1>Poenggrenser {FORSTE_AR}–{ar} – kommer du inn?</h1>
-<p>Søk i poenggrensene fra Samordna opptak for {len(studier)} studier, se hvordan de har utviklet seg siden {FORSTE_AR}, regn ut poengene dine og finn ut hvilke studier du ville kommet inn på.</p>
+<p>Søk i poenggrensene fra Samordna opptak for {len(studier)} studier, se utviklingen fra {FORSTE_AR} til {ar}, regn ut poengene dine og finn ut hvilke studier du ville kommet inn på – også hos private høyskoler med eget opptak.</p>
 <label for="sok" class="skjult">Søk etter studium, lærested eller sted</label>
 <input id="sok" type="search" class="stort-sok" placeholder="Søk: sykepleie, NTNU, Bergen, medisin …" autocomplete="off">
 <ul id="sok-treff" class="studieliste" aria-live="polite"></ul>
+<p class="snarveier small">Snarveier: <a href="#kalkulator">Poengkalkulator</a> · <a href="{url('endringer/')}">Størst endring {FORSTE_AR}–{ar}</a> ·
+<a href="{url('privat/')}">Private høyskoler (BI, Kristiania, Noroff)</a> · <a href="{url('alle-studier/')}">Alle studier</a></p>
 </section>
 
 <section id="kalkulator" class="kort">
@@ -906,17 +916,20 @@ def forside(studier, per_lared, per_fag, ar):
 <div><h3>Falt mest</h3><ul class="studieliste">{endring_li(studier, ar, False)}</ul></div></div>
 </section>
 
-<section><h2>Høyeste poenggrenser {ar}</h2>
-<ul class="studieliste">{topp_li}</ul>
-<p><a href="{url('alle-studier/')}">Se alle {len(studier)} studier →</a></p></section>
-
-<section id="laresteder"><h2>Læresteder</h2><ul class="lenkenett">{lared_li}</ul></section>
-<section id="fagomrader"><h2>Fagområder</h2>{fag_html}</section>
-
 <section id="private"><h2>Private høyskoler med eget opptak</h2>
 <p>BI, Høyskolen Kristiania og Noroff har eget opptak utenom Samordna opptak. Der er det minimumskrav – ikke poenggrenser.</p>
 <ul class="lenkenett"><li><a href="{url('privat/bi/')}">Opptakskrav BI</a></li><li><a href="{url('privat/kristiania/')}">Opptakskrav Høyskolen Kristiania</a></li>
 <li><a href="{url('privat/noroff/')}">Opptakskrav Noroff</a></li><li><a href="{url('privat/')}">Om private høyskoler</a></li></ul></section>
+
+<section><h2>Høyeste poenggrenser {ar}</h2>
+<ul class="studieliste">{topp_li}</ul>
+<p><a href="{url('alle-studier/')}">Se alle {len(studier)} studier →</a></p></section>
+
+<section id="laresteder"><h2>Læresteder</h2>
+<p class="small muted">Lærestedene med «eget opptak» er private høyskoler utenfor Samordna opptak. Der finnes det minimumskrav, ikke poenggrenser. <a href="{url('privat/')}">Les mer om private høyskoler</a>.</p>
+<ul class="lenkenett">{lared_li}</ul></section>
+<section id="fagomrader"><h2>Fagområder</h2>{fag_html}</section>
+
 """
     side("", f"Poenggrenser {FORSTE_AR}–{ar} og poengkalkulator – {SITE_NAVN}",
          f"Se poenggrensene fra Samordna opptak {FORSTE_AR}–{ar} for {len(studier)} studier, hvordan de har endret seg, regn ut poengene dine og finn ut hvilke studier du kommer inn på.",
@@ -1212,6 +1225,7 @@ def main():
     meta, studier = last_data()
     ar = max(s["ar"] for s in studier)
     FORSTE_AR, SISTE_AR = meta.get("forste_ar", ar), ar
+    PRIVATE_SKOLER[:] = json.loads((ROOT / "data" / "private.json").read_text(encoding="utf-8"))["skoler"]
     if OUT.exists():
         shutil.rmtree(OUT)
     (OUT / "assets").mkdir(parents=True)

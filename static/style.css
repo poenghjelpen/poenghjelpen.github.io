@@ -188,3 +188,6 @@ table.fakta th { width: 34%; text-transform: none; letter-spacing: 0; font-size:
 #p-ut li.nei { background: var(--nei-myk); color: var(--nei); }
 
 .studieliste .via.ukjent { background: var(--aksent-myk); color: var(--dempet); }
+
+.snarveier { margin: .8rem 0 0; }
+.snarveier a { white-space: nowrap; }

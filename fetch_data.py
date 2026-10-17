@@ -64,6 +64,11 @@ def tom_runde():
     return {"hoved": {"forste": None, "ordinar": None}, "supplering": {"forste": None, "ordinar": None}}
 
 
+def rydd_navn(navn):
+    """Fjerner mellomrom før tegnsetting og doble mellomrom: «Psykologi , høst» -> «Psykologi, høst»."""
+    return re.sub(r"\s+([,.;:])", r"\1", re.sub(r"\s+", " ", navn)).strip()
+
+
 def normaliser(navn):
     return re.sub(r"[^a-zæøå0-9]", "", navn.lower().rstrip("*"))
 
@@ -86,7 +91,7 @@ def main():
         ar = int(r["År"])
         k = koder.setdefault(kode, {"info": {}, "historikk": {}})
         k["info"][ar] = {
-            "studienavn": r["Studienavn"].strip(),
+            "studienavn": rydd_navn(r["Studienavn"]),
             "laerested": r["Lærested"].strip(),
             "studiested": r["Studiested"].strip(),
             "fagomrade": r["Utdanningsområde og -type"].strip(),
