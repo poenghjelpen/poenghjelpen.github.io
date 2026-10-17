@@ -387,8 +387,7 @@ def side(path, tittel, beskrivelse, innhold, ekstra_head="", skript=(), i_sitema
 <a href="{url('om/')}">Om Poenghjelpen</a>
 <a href="{url('personvern/')}">Personvern</a>
 </nav>
-<p>Poenggrensene kommer fra <a href="https://www.samordnaopptak.no/universitet-og-hogskole/poengberegning/poenggrenser.html" rel="noopener">Samordna opptak</a>.
-Poenghjelpen er en uavhengig, gratis tjeneste og er ikke tilknyttet Samordna opptak. Sjekk alltid opptakskravene hos lærestedet.</p>
+{bunntekst(path)}
 </div></footer>
 <script src="{url('assets/poeng.js')}" defer></script>
 <script src="{url('assets/app.js')}" defer></script>
@@ -399,6 +398,16 @@ Poenghjelpen er en uavhengig, gratis tjeneste og er ikke tilknyttet Samordna opp
     fil = OUT / path if path.endswith(".html") else OUT / path / "index.html"
     fil.parent.mkdir(parents=True, exist_ok=True)
     fil.write_text(dok, encoding="utf-8")
+
+
+def bunntekst(path):
+    """Kildeteksten nederst: Samordna opptak for poenggrenser, skolenes egne sider for private høyskoler."""
+    if path.startswith("privat/"):
+        skoler = ", ".join(f'<a href="{e(sk["nettside"])}" rel="noopener">{e(sk["navn"])}</a>' for sk in PRIVATE_SKOLER)
+        return (f"<p>Opptakskravene for private høyskoler kommer fra skolenes egne nettsider ({skoler}), ikke fra Samordna opptak. "
+                "Poenghjelpen er en uavhengig, gratis tjeneste og er ikke tilknyttet skolene. Sjekk alltid kravene hos skolen før du søker.</p>")
+    return ('<p>Poenggrensene kommer fra <a href="https://www.samordnaopptak.no/universitet-og-hogskole/poengberegning/poenggrenser.html" rel="noopener">Samordna opptak</a>.\n'
+            "Poenghjelpen er en uavhengig, gratis tjeneste og er ikke tilknyttet Samordna opptak. Sjekk alltid opptakskravene hos lærestedet.</p>")
 
 
 def sti(*ledd):
@@ -1040,7 +1049,7 @@ def minimum_kort(st):
         return "Ikke oppgitt" if st["skole"]["id"] == "bi" else "Ingen poengkrav"
     if "alle" in m:
         return f"{poengtall(m['alle'])} poeng"
-    return f"{poengtall(m['forste'])} / {poengtall(m['ordinar'])} poeng"
+    return f"{poengtall(m['forste'])} (førstegangsvitnemål) / {poengtall(m['ordinar'])} (ordinær kvote)"
 
 
 def krav_liste(st):
@@ -1065,13 +1074,22 @@ def kilde_html(skole, st=None, hentet=""):
 EGET_OPPTAK = '<span class="merke">Eget opptak</span>'
 
 
+def gyldighet_html(skole, lenke, lenketekst):
+    """Tydelig beskjed om hvilket opptak kravene gjelder, og at de kan endre seg."""
+    gjelder = skole["gjelder"][0].lower() + skole["gjelder"][1:]
+    endring = (f"De kan endre seg for opptaket i {SISTE_AR + 1}." if str(SISTE_AR) in skole["gjelder"]
+               else "De kan endre seg før studiestart.")
+    return (f'<div class="gyldighet"><b>Kravene gjelder {e(gjelder)}.</b> {endring} '
+            f'Sjekk alltid de nyeste kravene på <a href="{e(lenke)}" rel="noopener">{e(lenketekst)}</a> før du søker.</div>')
+
+
 def privat_studieside(skole, st, hentet):
     m = st["minimum"]
     navn, kort = st["navn"], skole["kort"]
     steder = ", ".join(st["steder"])
     tittel = f"Opptakskrav {navn} – {kort} {skole['tittel_ar']}"
     if m and "forste" in m:
-        min_desc = f"minimum {poengtall(m['forste'])} skolepoeng med førstegangsvitnemål og {poengtall(m['ordinar'])} konkurransepoeng med ordinært vitnemål"
+        min_desc = f"minimum {poengtall(m['forste'])} skolepoeng med førstegangsvitnemål og {poengtall(m['ordinar'])} konkurransepoeng i ordinær kvote"
     elif m:
         min_desc = f"minimum {poengtall(m['alle'])} poeng"
     else:
@@ -1083,8 +1101,8 @@ def privat_studieside(skole, st, hentet):
         return f'<div class="tall"><div class="etikett">{etikett}</div><div class="verdi{" ord" if ord_ else ""}">{verdi}</div><div class="under">{under}</div></div>'
 
     if m and "forste" in m:
-        bokser = (boks("Minimumskrav, førstegangsvitnemål", poengtall(m["forste"]), "skolepoeng")
-                  + boks("Minimumskrav, ordinært vitnemål", poengtall(m["ordinar"]), "konkurransepoeng"))
+        bokser = (boks("Minimumskrav med førstegangsvitnemål", poengtall(m["forste"]), "skolepoeng – gjelder deg som søker med førstegangsvitnemål")
+                  + boks("Minimumskrav i ordinær kvote", poengtall(m["ordinar"]), "konkurransepoeng – gjelder deg som søker med ordinært vitnemål"))
     elif m:
         bokser = boks("Minimumskrav", poengtall(m["alle"]), "skolepoeng med førstegangsvitnemål, ellers konkurransepoeng")
     else:
@@ -1111,8 +1129,6 @@ def privat_studieside(skole, st, hentet):
         advarsler.append(e(st["minimum_merknad"]))
     if not any(str(a) in st["oppstart"] for a in (SISTE_AR, SISTE_AR + 1)):
         advarsler.append(f"Skolens side oppgir oppstart {e(st['oppstart'].lower())}. Sjekk med {e(kort)} om studiet tar opp nye studenter.")
-    if skole.get("gjelder_merknad"):
-        advarsler.append(e(skole["gjelder_merknad"]))
 
     sjekk = f"""<section class="kort" aria-labelledby="sjekk-h">
 <h2 id="sjekk-h">Oppfyller du kravet?</h2>
@@ -1142,6 +1158,7 @@ def privat_studieside(skole, st, hentet):
     innhold = f"""{sti(("Private høyskoler", "privat/"), (kort, priv_url(skole)), (navn, None))}
 <h1>Opptakskrav {e(navn)} {EGET_OPPTAK}</h1>
 <p class="muted">{e(skole['navn'])} · {e(steder)} · {e(st['type'])}</p>
+{gyldighet_html(skole, st["url"], f"studiets side hos {kort}")}
 <div class="merknad"><b>{"Dette er et minimumskrav, ikke en poenggrense." if m else ("Studiet har ingen poenggrense og ikke noe oppgitt poengkrav." if skole["id"] != "bi" else "Poengkravet er ikke oppgitt – og dette er uansett ikke en poenggrense.")}</b> {e(skole['garanti'])}</div>
 <div class="tall-grid">{bokser}</div>
 {"".join(f'<p class="advarsel small">{a}</p>' for a in advarsler)}
@@ -1174,6 +1191,7 @@ def privat_skoleside(skole, hentet):
     innhold = f"""{sti(("Private høyskoler", "privat/"), (kort, None))}
 <h1>Opptakskrav {e(kort)} {e(skole['tittel_ar'])} {EGET_OPPTAK}</h1>
 <p>{intro}</p>
+{gyldighet_html(skole, skole["kilder"][0]["url"], f"{skole['navn']} sin egen side om opptakskrav")}
 <div class="merknad"><b>Minimumskrav er ikke poenggrenser.</b> {e(skole['garanti'])}</div>
 <div class="regler"><div class="kort"><h3>Gjelder</h3><p>{e(skole['gjelder'])}.{(' ' + e(skole['gjelder_merknad'])) if skole['gjelder_merknad'] else ''}</p></div>
 <div class="kort"><h3>Opptak og frister</h3><p>{e(skole['opptak'])}</p></div>
@@ -1192,7 +1210,7 @@ def privat_samleside(priv):
     for sk in priv["skoler"]:
         med_min = sum(1 for st in sk["studier"] if st["minimum"])
         kort.append(f'<div class="kort"><h3><a href="{url(priv_url(sk))}">{e(sk["navn"])}</a></h3>'
-                    f'<p>{len(sk["studier"])} studier · {e(sk["gjelder"])}</p>'
+                    f'<p>{len(sk["studier"])} studier</p>' + gyldighet_html(sk, sk["kilder"][0]["url"], sk["kort"] + " sin egen side") +
                     f'<p class="small">{e(sk["poengregel"])}</p><p class="small muted">{e(sk["opptak"])}</p>'
                     f'<p><a href="{url(priv_url(sk))}">Se opptakskrav {e(sk["kort"])} →</a></p></div>')
     innhold = f"""{sti(("Private høyskoler", None))}

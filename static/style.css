@@ -191,3 +191,5 @@ table.fakta th { width: 34%; text-transform: none; letter-spacing: 0; font-size:
 
 .snarveier { margin: .8rem 0 0; }
 .snarveier a { white-space: nowrap; }
+
+.gyldighet { border: 1px solid var(--oransje); border-left-width: 4px; background: var(--flate); padding: .7rem 1rem; border-radius: 0 8px 8px 0; margin: 1rem 0; }
